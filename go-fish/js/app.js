@@ -232,14 +232,14 @@ $( () => {
         }        
         checkForEnd () {
             console.log("in check for end");
-            //game ends when center is empty and 1 player's hand empties 
-            (this.cards.length < 1) && (typeof Object.keys(this.players).find(playerKey => this.players[playerKey].hand.length < 1) === 'string') ? 
+            //game ends when center is empty and all hands are empty
+            (this.cards.length < 1) && (Object.keys(this.players).filter(playerKey => this.players[playerKey].hand.length < 1).length === Object.keys(this.players).length) ? 
                 this.selectWinner() : this.checkIfEmptyHand();
         }
         checkIfEmptyHand () {
             console.log("in checkIfEmptyHand");
-            //if the current player has cards in their hand don't deal
-            this.players[this.currentTurn].hand.length > 0 ? this.turnSelector() :
+            //if the current player has cards in their hand or no go fish pile left, then don't deal
+            (this.cards.length === 0) || (this.players[this.currentTurn].hand.length > 0) ? this.turnSelector() :
             //otherwise if there are more than 5 cards left in deck, deal them 5; if not, the remainder; check end should prevent dealing with 0 cards left 
                 this.cards.length >= 5 ? this.dealCardInstances(5) : this.dealCardInstances(this.cards.length);
         }
@@ -280,6 +280,8 @@ $( () => {
 /////////PLAYER SELECTION/////////
         turnSelector () {
             console.log("in turn selector");
+            //if player has no cards left because go fish pile is empty, their turn is skipped 
+            this.players[this.currentTurn].hand.length === 0 ? this.updateCurrentTurn() : 
             //initiates user or ai turn; both userTurn() and aiTurn() share all other turn mechanic methods
             this.currentTurn === 1 ? this.userTurn() : this.aiTurn();
         }
