@@ -212,6 +212,7 @@ body {
         color: rgba(255, 255, 255, 0.9);
         z-index: 1;
         align-self: center;
+        text-shadow: -1px 1px 1px rgba(0,0,0,.5);
         text-align: center;
         justify-content: center;
         font-size: 2vw;
