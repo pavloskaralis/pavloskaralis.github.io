@@ -4,6 +4,8 @@ Languages Used: HTML, CSS, JS
 
 Libraries Used: jQuery
 
+Inspiration Source: https://cardgames.io/gofish/
+
 HTML/CSS Approach: 
 All non-game-piece items were hard coded into the HTML;
 The HTML is divided into 8 sections: game pieces, start screen, end screen prompt, scores, buttons, art credit, and backgrounds; 
