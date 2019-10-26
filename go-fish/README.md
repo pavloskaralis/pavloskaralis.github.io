@@ -1,5 +1,7 @@
 Live Site: https://pavloskaralis.github.io/go-fish/
+
 Languages Used: HTML, CSS, JS
+
 Libraries Used: jQuery
 
 HTML/CSS Approach: 
