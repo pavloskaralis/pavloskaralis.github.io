@@ -392,7 +392,7 @@ $( () => {
                     this.checkGoFishMatch();
                 }, 1500) : 
                 //otherwise toggles pointer events for go fish pile card nodes 
-                this.cards.forEach(cardInstance => this.pointerEventsToggle(cardInstance));
+                setTimeout(() => this.cards.forEach(cardInstance => this.pointerEventsToggle(cardInstance)), 500);
         }
         checkGoFishMatch () {
             //after user select, removes pointer events from go fish pile card nodes
