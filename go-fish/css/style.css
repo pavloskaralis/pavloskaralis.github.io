@@ -359,14 +359,14 @@ body {
             box-sizing: border-box;
             height: 100%; 
             padding: 1.5% .5%;  
-        }
-        .player-count {
             cursor: pointer; 
+        }
+        #player-count-container, .player-count-text {
+            cursor: default; 
         }
         #player-count-text {
             flex-basis: 50%;
             font-size: 3vw;
-            cursor: default; 
         }
         .player-count:hover{
             border-left: .5vw solid rgb(20, 40, 50);
