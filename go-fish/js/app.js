@@ -28,11 +28,15 @@ $( () => {
         //initiates title screen and player count selection
         renderStart () {
             setTimeout(()=>$('#title').addClass('show'),500);
-            setTimeout(()=>$('#player-count-container').addClass('show').css('pointer-events','auto'),1000);
+            setTimeout(()=> {
+                $('#player-count-container').addClass('show').css('pointer-events','auto');
+                $('#player-count-text').css('cursor','default');
+                $('.player-count').css('cursor','pointer');
+            },1000);
             //attached specific number to each player count button
             for(let num = 0; num < 3; num ++){
                 //passes player count as param (2, 3, or 4) to initiate next method grouping 
-                $('.player-count').eq(num).css('cursor','pointer').on('click',()=> this.createBoard(num+2));
+                $('.player-count').eq(num).on('click',()=> this.createBoard(num+2));
             }
             $('#player-count-container').css('cursor','default');
         }
