@@ -30,8 +30,8 @@ $( () => {
             setTimeout(()=>$('#title').addClass('show'),500);
             setTimeout(()=> {
                 $('#player-count-container').addClass('show').css('pointer-events','auto');
-                $('.player-count').css('cursor','pointer');
-                $('#player-count-text').css('cursor','default');
+                // $('.player-count').css('cursor','pointer');
+                // $('#player-count-text').css('cursor','default');
             },1000);
             //attached specific number to each player count button
             for(let num = 0; num < 3; num ++){
