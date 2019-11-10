@@ -363,15 +363,13 @@ body {
         #player-count-text {
             flex-basis: 50%;
             font-size: 3vw; 
-            cursor: default;
         }
         .player-count:hover{
             border-left: .5vw solid rgb(20, 40, 50);
             border-right: .5vw solid rgb(20, 40, 50);
             background-image: linear-gradient(to right, rgba(10, 20, 30, 0.7), rgba(20, 40, 50,.7), rgba(10, 20, 30, 0.7));
             color: rgba(255, 160, 0, 0.9);
-            cursor: pointer;
-            }
+        }
 
 /* /////////// */
 /* background */

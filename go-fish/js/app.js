@@ -28,7 +28,7 @@ $( () => {
         //initiates title screen and player count selection
         renderStart () {
             setTimeout(()=>$('#title').addClass('show'),500);
-            setTimeout(()=>$('#player-count-container').addClass('show').css('pointer-events','auto'),1000);
+            setTimeout(()=>$('#player-count-container').addClass('show').css('pointer-events','auto').css('cursor','pointer'),1000);
             //attached specific number to each player count button
             for(let num = 0; num < 3; num ++){
                 //passes player count as param (2, 3, or 4) to initiate next method grouping 
