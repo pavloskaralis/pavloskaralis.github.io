@@ -358,10 +358,8 @@ body {
             text-align: center;
             box-sizing: border-box;
             height: 100%; 
-            padding: 1.5% .5%;   
-        }
-        .player-count {
-            cursor: pointer;
+            padding: 1.5% .5%;  
+            cursor: pointer; 
         }
         #player-count-container, #player-count-text {
             cursor: default; 
