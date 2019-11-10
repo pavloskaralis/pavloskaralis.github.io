@@ -359,6 +359,7 @@ body {
             box-sizing: border-box;
             height: 100%; 
             padding: 1.5% .5%; 
+            cursor: pointer;
         }
         #player-count-text {
             flex-basis: 50%;
