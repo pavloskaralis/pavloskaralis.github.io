@@ -23,6 +23,8 @@ class AI extends User {
         this.randomPlayerOptions = [];
         //keeps track of opponent hand lengths to prevent selecting an opponent with 0 cards
         this.opponentHandLengths = {};
+        //consists of opponents with hand lengths great than 0
+        this.backupPlayerOptions = [];
     }
     rememberHandLengths (players) {
         //also remembers current opponent hand lengths after each swap
@@ -66,7 +68,6 @@ class AI extends User {
         this.previousOpponentKey = this.currentOpponentKey;
         //makes card selection; must appear before randomCardOptions or risks causing a rare error via using nonupdated this.sortedQuantifiedHandCardNames
         this.selectCard(); 
-
         //filters out the name of the previous card instance from the sorted quantified hand count array to avoid identical selections with 2 players
         //conditional (this.previousCard !== null ?) required to prevent error on ai's first turn (cannot read property of null)
         this.randomCardOptions = this.previousCard !== null ? this.sortedQuantifiedHandCardNames.filter(name => name !== this.previousCard.name) : null;
@@ -74,7 +75,8 @@ class AI extends User {
         this.randomPlayerOptions = this.opponentKeys.filter(key => (key !== this.previousOpponentKey) &&
         //last minute fix to preventing selection of players with no cards in hand; not ideal but works 
             (this.opponentHandLengths[key] > 0));
-       
+        //if there is no random player option, opponent will be selected among opponents with full hands
+        this.backupPlayerOptions = Object.keys(this.opponentHandLengths).filter(key => (this.playerKey !== key) && (this.opponentHandLengths[key] > 0)); 
         //for debugging
         console.log(this.previousCard !== null ? `previous card was ${this.previousCard.name}` : false);
         console.log(this.previousOpponentKey !== null ? `previous opponent was ${this.previousOpponentKey}` : false);
@@ -82,19 +84,24 @@ class AI extends User {
         console.log(`original choice is ${this.currentCard.name}`);
         console.log(`randomCardOptions are ${this.randomCardOptions}`);
         console.log(`randomPlayerOptions are ${this.randomPlayerOptions}`);
+        console.log(`current player hand length is ${this.hand.length}`); 
+        console.log('opponent hand lengths are', this.opponentHandLengths);
+        console.log(`backupPlayerOptions are ${this.backupPlayerOptions}`);
+
         
         //if the current card was selected from memory, the current opponent key will be its owner; 
         this.currentOpponentKey = this.currentCard.owner !== this.playerKey ? this.currentCard.owner : 
         //otherwise if there is at least 1 alternative opponent, the current opponent key will be chosen between players who were not selected the previous turn 
-            this.randomPlayerOptions.length > 0 ?  this.randomPlayerOptions[Math.floor(Math.random() * this.randomPlayerOptions.length)] : this.opponentKeys[0]; 
-        
+            this.randomPlayerOptions.length > 0 ?  this.randomPlayerOptions[Math.floor(Math.random() * this.randomPlayerOptions.length)] :
+            //otherwise it will be a random player with a full hand; 
+                 this.opponentKeys[this.backupPlayerOptions[Math.floor(Math.random() * this.backupPlayerOptions.length)]]; 
         //if there is only 1 opponent option when chosing from hand, instead of selecting random player, selects random card if at least 1 alternative option exists 
         (this.currentOpponentKey === this.previousOpponentKey) && (this.currentCard.name === this.previousCard.name) && (this.randomCardOptions.length > 0)  ? 
                 this.currentCard = this.hand.find(cardInstance => cardInstance.name === this.randomCardOptions[0]) : false
         
         //adding protection incase Ai selection ever fails 
             typeof this.currentCard !== 'object' ? this.currentCard = this.hand[Math.floor(Math.random() * this.hand.length)] : false;
-            typeof this.currentOpponentKey !== 'string' ? this.currentOpponentKey = this.opponentKeys[Math.floor(Math.random() * this.opponentKeys.length)] : false;
+            typeof this.currentOpponentKey !== 'string' ? this.currentOpponentKey = this.opponentKeys[this.backupPlayerOptions[Math.floor(Math.random() * this.backupPlayerOptions.length)]] : false;
        
         //for debugging
         console.log(`updated choice is ${this.currentCard.name}`)

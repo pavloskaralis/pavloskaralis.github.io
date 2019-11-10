@@ -274,8 +274,6 @@ $( () => {
             console.log("in turn selector");
             //if player has no cards left because go fish pile is empty, their turn is skipped 
             this.players[this.currentTurn].hand.length === 0 ? this.updateCurrentTurn() : 
-            //for debugging
-            this.currentTurn !== 1 ? console.log('hand lengths:',this.players[this.currentTurn].opponentHandLengths) : null; 
             //initiates user or ai turn; both userTurn() and aiTurn() share all other turn mechanic methods
             this.currentTurn === 1 ? this.userTurn() : this.aiTurn();
         }
@@ -450,7 +448,7 @@ $( () => {
             //cycles turn depending on conditionals 
             typeof matchFound === 'string' ? this.matchOfFourFound(matchFound) : 
             //conditional works but only in specific order due to .name === .name being null if placed first (player request occurs before gofish exists)
-                (this.matchingCardInstances.length > 0) || (this.currentCard.name === this.currentGoFish.name) ? 
+                (this.matchingCardInstances.length > 0) || ((this.currentGoFish !== null) && (this.currentCard.name === this.currentGoFish.name)) ? 
                         this.startTurn() : this.updateCurrentTurn(); 
         }
         matchOfFourFound (matchingName) {
@@ -474,12 +472,16 @@ $( () => {
                 //removes matching card nodes
                 setTimeout(()=> cardInstance.fetchNode().remove(), 2000);
                 //removes matching card instance 
-                setTimeout(()=> this.players[this.currentTurn].hand.splice(this.players[this.currentTurn].hand.indexOf(cardInstance), 1), 2500)
+                setTimeout(()=> {
+                    this.players[this.currentTurn].hand.splice(this.players[this.currentTurn].hand.indexOf(cardInstance), 1);
+                    //ai remembers hand lengths  as cards removed
+                    this.aiRememberHandLengths();
+                }, 2500)
             }); 
             //cycles turn based on path
             setTimeout(()=> {
                 //conditional works but only in specific order due to .name === .name being null if placed first (player request occurs before gofish exists)
-                (this.matchingCardInstances.length > 0) || (this.currentCard.name === this.currentGoFish.name) ? 
+                (this.matchingCardInstances.length > 0) || ((this.currentGoFish !== null) && (this.currentCard.name === this.currentGoFish.name)) ? 
                         this.startTurn() : this.updateCurrentTurn();
             }, 4000);
         }
