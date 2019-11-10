@@ -539,7 +539,7 @@ $( () => {
         pointerEventsToggle (instance) {
             //checks current pointer-events value and returns opposite
             instance.fetchNode().css('pointer-events') !== 'none' ? 
-                instance.fetchNode().css('pointer-events','none') : instance.fetchNode().css('pointer-events','auto');
+                instance.fetchNode().css('pointer-events','none') : instance.fetchNode().css('pointer-events','auto').css('cursor','pounter');
         }
         //adds event listener to each card node in user's hand node
         addHandCardNodeEvent (cardInstance) {
