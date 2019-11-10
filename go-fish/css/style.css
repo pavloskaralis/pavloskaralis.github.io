@@ -70,6 +70,10 @@ body {
         pointer-events: none; 
     } 
 
+    .deck-card:hover {
+        cursor: pointer;   
+    }
+
         .float {
             animation: float; 
             transform: rotate(-90deg);
@@ -112,6 +116,10 @@ body {
         pointer-events: none; 
     }
 
+    .boat:hover {
+        cursor: pointer;   
+    }
+
             @keyframes sway {
                 from{margin: 0em auto;}
                 to{margin: .3em auto;}
@@ -146,6 +154,7 @@ body {
                 margin-bottom: .5vw;  
                 box-shadow: 0 0 2vw .5vw rgba(0,0,0,.5);                
                 z-index: 2; 
+                cursor: pointer;   
             }
 
 /* /////// */
