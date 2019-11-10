@@ -13,18 +13,10 @@ $( () => {
             this.currentGoFish = null;
             this.dealtCards = []; 
             this.winner = null; 
-            //last minute solution to avoid AI selecting opponents with no cards in their hand (late game issue for 3 or more players)
-            //passess game class instance variable name to AI instances
-            this.instanceVarName = null; 
         }
-////////////////////////////
-////////START SCREEN////////
-////////////////////////////
-        //passes self to internally housed instances to avoid AI selection of player with empty hand 
-        //quick last minute solution to pass player hand lengths to ai; not ideal but works 
-        passSelf (instanceVariable) {
-            this.instanceVarName = instanceVariable;
-        }
+/*//////////////////////////*/
+/*///////START SCREEN///////*/
+/*//////////////////////////*/
         //initiates title screen and player count selection
         renderStart () {
             setTimeout(()=>$('#title').addClass('show'),500);
@@ -35,11 +27,11 @@ $( () => {
                 $('.player-count').eq(num).on('click',()=> this.createBoard(num+2));
             }
         }
-////////////////////////////
-//////////BOARD SETUP///////
-////////////////////////////
+/*//////////////////////////*/
+/*/////////BOARD SETUP//////*/
+/*//////////////////////////*/
 
-/////////METHOD HUB/////////
+/*////////METHOD HUB////////*/
         createBoard (num) {
             $('#start-container').children().removeClass('show').addClass('hide').css('pointer-events','none');
             //num = 2, 3, or 4 (player count)
@@ -58,7 +50,7 @@ $( () => {
             //initiates next method grouping 
             this.turnSelector();
         }
-/////////DISPLAY//////////
+/*////////DISPLAY/////////*/
         renderButtons () {
             $('#button-container').addClass('show');
             $('#restart').css('pointer-events','auto');
@@ -82,7 +74,7 @@ $( () => {
             $('#user-score-container').addClass('show');
             $('#ai-score-container').addClass('show');
         }
-/////////PLAYERS//////////
+/*////////PLAYERS/////////*/
         createPlayerInstances (num) {
             //num = 2, 3, or 4 (player count)
             //pre assigns player keys so they can be immediately passed to AI on creation
@@ -125,7 +117,7 @@ $( () => {
             Object.keys(this.players).length > 2  ? $('#user-container').prepend($('<div>').addClass('boat').css('pointer-events','none')) : false; 
             Object.keys(this.players).length === 3 ? $('<div>').addClass('boat').css('pointer-events','none').insertAfter($('#ai-container').children().eq(0)) : false; 
         }
-/////////CARDS/////////
+/*////////CARDS////////*/
         //creates 52 card class instances
         createCardInstances () { 
             const suits = ['Hearts','Spades','Clubs','Diamonds'];
@@ -185,7 +177,7 @@ $( () => {
             //sorts nodes in players's hand by value
             Object.keys(this.players).forEach(playerKey => this.renderSortedHand(this.players[playerKey].fetchNode())); 
         }
-/////////PLAYER AND CARD EVENT LISTENERS/////////
+/*////////PLAYER AND CARD EVENT LISTENERS////////*/
         addEventListeners () {
             //adds on click to each card node in user's hand node using helper method 
             this.players['1'].hand.forEach(cardInstance => this.addHandCardNodeEvent(cardInstance));
@@ -210,11 +202,11 @@ $( () => {
             $('#player1').off('click');
         }
         
-////////////////////////////
-/////////TURN MECHANICS/////
-////////////////////////////
+/*//////////////////////////*/
+/*///////TURN MECHANICS/////*/
+/*//////////////////////////*/
 
-/////////SETUP/////////
+/*////////SETUP////////*/
         startTurn () {
             //solution for node animations getting skipped as a result of player go fish phase changing interval loop's source array length
             $('.deck-card').length !== $('.float').length ? this.renderDeckCardNodeAnimation() : false; 
@@ -277,11 +269,13 @@ $( () => {
             });
             setTimeout(() => this.turnSelector(), 3500);
         }
-/////////PLAYER SELECTION/////////
+/*////////PLAYER SELECTION////////*/
         turnSelector () {
             console.log("in turn selector");
             //if player has no cards left because go fish pile is empty, their turn is skipped 
             this.players[this.currentTurn].hand.length === 0 ? this.updateCurrentTurn() : 
+            //for debugging
+            this.currentTurn !== 1 ? console.log('hand lengths:',this.players[this.currentTurn].opponentHandLengths) : null; 
             //initiates user or ai turn; both userTurn() and aiTurn() share all other turn mechanic methods
             this.currentTurn === 1 ? this.userTurn() : this.aiTurn();
         }
@@ -317,7 +311,7 @@ $( () => {
             //continues ai control flow
             setTimeout(() => this.checkTurnCompletion(), 3500);
         }
-/////////REQUEST PHASE/////////
+/*////////REQUEST PHASE////////*/
         checkTurnCompletion () {
             console.log('in checkTurnCompletion')
             //for debugging 
@@ -330,7 +324,7 @@ $( () => {
             //if user turn, disables further card or opponent selection using helper method 
             this.currentTurn === 1 ? this.toggleUserPointerEvents() : false;
             //when a card is requested, opponents will know the player has it, whether user or ai 
-            this.aiRemember(this.currentCard)
+            this.aiRememberCard(this.currentCard)
             //filters any matching card instances into global monitor 
             this.matchingCardInstances = this.currentOpponent.hand.filter(cardInstance => cardInstance.name === this.currentCard.name);
             setTimeout(()=>  {
@@ -343,7 +337,7 @@ $( () => {
         playerCardMatchFound () {
             console.log("in playercardmatchfound")
             //when a card is gained, opponents will know the player has it, whethe ruser or ai 
-            this.matchingCardInstances.forEach(cardInstance => this.aiRemember(cardInstance));
+            this.matchingCardInstances.forEach(cardInstance => this.aiRememberCard(cardInstance));
             //different prompts based on opponent selection 
             this.currentOpponent !== this.players['1'] ? 
                 this.renderPrompt(`<span class='orange'> player${this.currentOpponent.playerKey} </span>  has <span class='orange'> 
@@ -363,6 +357,8 @@ $( () => {
                 //ai must forget all cards they gain 
                 this.currentTurn !== 1 ? this.players[this.currentTurn].forget(cardInstance) : false; 
                 this.currentOpponent.giveCard(cardInstance);
+                //hand lengths are memorized after card is swapped
+                this.aiRememberHandLengths();
             });
         }
         swapPlayerCardNodes () {
@@ -379,7 +375,7 @@ $( () => {
                 this.currentOpponent === this.players['1'] ? cardInstance.fetchNode().off('click') : false;
             });
         }
-/////////GO FISH PHASE/////////
+/*////////GO FISH PHASE////////*/
         goFish () {
             this.renderPrompt(`go <span class='orange'> fish </span>`);
             setTimeout(() => $('#prompt-container').removeClass('show').addClass('hide'), 500);
@@ -402,6 +398,8 @@ $( () => {
             //places fished card instance into player instance's hand and removes from go fish pile 
             this.players[this.currentTurn].takeCard(this.currentGoFish);
             this.cards.splice(this.cards.indexOf(this.currentGoFish), 1);
+            //hand lengths are memorized after card is swapped
+            this.aiRememberHandLengths();
             //checks whether fished card matches requested card 
             this.currentGoFish.name === this.currentCard.name ? this.goFishMatchFound() : this.goFishNotMatch(); 
         }
@@ -411,7 +409,7 @@ $( () => {
                 this.renderPrompt(`player${this.currentTurn} fished <span class='orange'>  ${this.currentGoFish.fetchNode().attr('data-name')} </span> `) : 
                 this.renderPrompt(`you fished <span class='orange'>  ${this.currentGoFish.fetchNode().attr('data-name')} </span> `);
             //card shows to all players if go fish is a match 
-            this.aiRemember(this.currentGoFish); 
+            this.aiRememberCard(this.currentGoFish);  
             this.renderCardNodeFlip(this.currentGoFish);
             //show and hide animation won't apply due to float animation
             this.cardSwapAnimation(this.currentGoFish);
@@ -436,7 +434,7 @@ $( () => {
             //cycles to next player
             setTimeout(()=> this.checkIfFourMatch(), 2500);
         }
-/////////ENDING TURN/////////
+/*////////ENDING TURN////////*/
         checkIfFourMatch () {
             console.log("in check if four match")
             const quantifiedHandCardNames = {};
@@ -491,13 +489,19 @@ $( () => {
             this.currentTurn < Object.keys(this.players).length ? this.currentTurn += 1 : this.currentTurn = 1
             this.startTurn();
         }
-    ////////////////////////
-    ////HELPER FUNCTIONS////
-    ////////////////////////
+    /*//////////////////////*/
+    /*///HELPER FUNCTIONS///*/
+    /*//////////////////////*/
         //ai class method helps to store requested or earned cards into their memory 
-        aiRemember (cardInstance) {
+        aiRememberCard (cardInstance) {
             Object.keys(this.players).forEach(playerKey => 
-                playerKey !== '1' && playerKey !== this.players[this.currentTurn].playerKey ? this.players[playerKey].remember(cardInstance) : false
+                playerKey !== '1' && playerKey !== this.players[this.currentTurn].playerKey ? this.players[playerKey].rememberCard(cardInstance) : false
+            )
+        }
+        //ai class method helps remember opponent hand lengths 
+        aiRememberHandLengths () {
+            Object.keys(this.players).forEach(playerKey => 
+                playerKey !== '1' ? this.players[playerKey].rememberHandLengths(this.players) : false
             )
         }
         //designed to work for both player and go fish pile swaps 
@@ -550,10 +554,10 @@ $( () => {
                 this.currentCard = this.players['1'].hand.find(handCardInstance => handCardInstance.nodeID === cardInstance.fetchNode().attr('id'));
                 setTimeout(()=> this.checkTurnCompletion(), 500);
             });
-        } 
-    ////////////////////////
-    ////////END GAME////////
-    //////////////////////// 
+        } ƒ
+    /*//////////////////////*/
+    /*///////END GAME///////*/
+    /*//////////////////////*/ 
         selectWinner () {
             //sorts users by score in descending order
             const sortedScores = Object.keys(this.players).sort((playerKey1, playerKey2) => this.players[playerKey2].score - this.players[playerKey1].score);
@@ -575,13 +579,11 @@ $( () => {
         }
     }
 
-////////////////////////
-///////INITIALIZE///////
-////////////////////////
+/*//////////////////////*/
+/*//////INITIALIZE//////*/
+/*//////////////////////*/
     //create game class instance
     const game = new Game();
-    //passes Game class instance variable name to AI class instances to avoid AI selection of player with empty hand 
-    game.passSelf(game);
     //render start screen  
     game.renderStart();
 });

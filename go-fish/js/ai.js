@@ -21,12 +21,15 @@ class AI extends User {
         this.randomCardOptions = [];
         //in 3 or 4 player mode, holds filtered opponent key options to prevent AI from making the same choice twice when chosing randomly from hand; updated as takeTurn() is called
         this.randomPlayerOptions = [];
-        //last minute solution to avoid ai selecting an opponent with no cards in their hand; not ideal but works 
-        //passes game class instance variable name so that player instances' hand lengths can be read within specific player instance 
-        this.gameInstanceVarName = gameInstanceVarName; 
+        //keeps track of opponent hand lengths to prevent selecting an opponent with 0 cards
+        this.opponentHandLengths = {};
+    }
+    rememberHandLengths (players) {
+        //also remembers current opponent hand lengths after each swap
+        Object.values(players).forEach(player => this.opponentHandLengths[player.playerKey] = player.hand.length); 
     }
     //called by game class whenever opponent card swap is made, opponent request is made, or opponent go fish card is revealed 
-    remember (cardInstance) {
+    rememberCard (cardInstance) {
         //avoids adding a duplicate copy of a card to memory 
         this.memory.indexOf(cardInstance) === - 1 ? this.memory.push(cardInstance) : false; 
     }
@@ -70,7 +73,7 @@ class AI extends User {
         //filters out key of previous opponent key selection to avoid identical selections with 3 or 4 players
         this.randomPlayerOptions = this.opponentKeys.filter(key => (key !== this.previousOpponentKey) &&
         //last minute fix to preventing selection of players with no cards in hand; not ideal but works 
-            (this.gameInstanceVarName.players[key].hand.length > 0));
+            (this.opponentHandLengths[key] > 0));
        
         //for debugging
         console.log(this.previousCard !== null ? `previous card was ${this.previousCard.name}` : false);
