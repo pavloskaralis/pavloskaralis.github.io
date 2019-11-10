@@ -28,7 +28,7 @@ class AI extends User {
     }
     rememberHandLengths (players) {
         //also remembers current opponent hand lengths after each swap
-        Object.values(players).forEach(player => this.opponentHandLengths[player.playerKey] = player.hand.length); 
+        Object.values(players).forEach(player => player.playerKey !== this.playerKey ? this.opponentHandLengths[player.playerKey] = player.hand.length : false); 
     }
     //called by game class whenever opponent card swap is made, opponent request is made, or opponent go fish card is revealed 
     rememberCard (cardInstance) {
@@ -76,7 +76,7 @@ class AI extends User {
         //last minute fix to preventing selection of players with no cards in hand; not ideal but works 
             (this.opponentHandLengths[key] > 0));
         //if there is no random player option, opponent will be selected among opponents with full hands
-        this.backupPlayerOptions = Object.keys(this.opponentHandLengths).filter(key => (this.playerKey !== key) && (this.opponentHandLengths[key] > 0)); 
+        this.backupPlayerOptions = Object.keys(this.opponentHandLengths).filter(key => this.opponentHandLengths[key] > 0); 
         //for debugging
         console.log(this.previousCard !== null ? `previous card was ${this.previousCard.name}` : false);
         console.log(this.previousOpponentKey !== null ? `previous opponent was ${this.previousOpponentKey}` : false);
