@@ -363,7 +363,8 @@ body {
         }
         #player-count-text {
             flex-basis: 50%;
-            font-size: 3vw; 
+            font-size: 3vw;
+            cursor: default; 
         }
         .player-count:hover{
             border-left: .5vw solid rgb(20, 40, 50);
