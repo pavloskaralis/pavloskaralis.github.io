@@ -474,7 +474,7 @@ $( () => {
                 //removes matching card instance 
                 setTimeout(()=> {
                     this.players[this.currentTurn].hand.splice(this.players[this.currentTurn].hand.indexOf(cardInstance), 1);
-                    //ai remembers hand lengths  as cards removed
+                    //ai remembers hand lengths as cards removed
                     this.aiRememberHandLengths();
                 }, 2500)
             }); 
@@ -554,7 +554,7 @@ $( () => {
                 this.renderPrompt(`you selected <span class='orange'>  ${cardInstance.fetchNode().attr('data-name')} </span> `);
                 //returns card object to global selection monitor 
                 this.currentCard = this.players['1'].hand.find(handCardInstance => handCardInstance.nodeID === cardInstance.fetchNode().attr('id'));
-                setTimeout(()=> this.checkTurnCompletion(), 500);
+                this.checkTurnCompletion();
             });
         } ƒ
     /*//////////////////////*/
