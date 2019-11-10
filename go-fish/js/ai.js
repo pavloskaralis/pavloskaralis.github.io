@@ -94,7 +94,7 @@ class AI extends User {
         //otherwise if there is at least 1 alternative opponent, the current opponent key will be chosen between players who were not selected the previous turn 
             this.randomPlayerOptions.length > 0 ?  this.randomPlayerOptions[Math.floor(Math.random() * this.randomPlayerOptions.length)] :
             //otherwise it will be a random player with a full hand; 
-                 this.opponentKeys[this.backupPlayerOptions[Math.floor(Math.random() * this.backupPlayerOptions.length)]]; 
+                 this.backupPlayerOptions[Math.floor(Math.random() * this.backupPlayerOptions.length)]; 
         //if there is only 1 opponent option when chosing from hand, instead of selecting random player, selects random card if at least 1 alternative option exists 
         (this.currentOpponentKey === this.previousOpponentKey) && (this.currentCard.name === this.previousCard.name) && (this.randomCardOptions.length > 0)  ? 
                 this.currentCard = this.hand.find(cardInstance => cardInstance.name === this.randomCardOptions[0]) : false
