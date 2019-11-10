@@ -34,7 +34,6 @@ $( () => {
                 //passes player count as param (2, 3, or 4) to initiate next method grouping 
                 $('.player-count').eq(num).on('click',()=> this.createBoard(num+2));
             }
-            $('#player-count-container').css('cursor','default');
         }
 ////////////////////////////
 //////////BOARD SETUP///////
@@ -540,7 +539,7 @@ $( () => {
         pointerEventsToggle (instance) {
             //checks current pointer-events value and returns opposite
             instance.fetchNode().css('pointer-events') !== 'none' ? 
-                instance.fetchNode().css('pointer-events','none') : instance.fetchNode().css('pointer-events','auto').css('cursor','pounter');
+                instance.fetchNode().css('pointer-events','none') : instance.fetchNode().css('pointer-events','auto').css('cursor','pointer');
         }
         //adds event listener to each card node in user's hand node
         addHandCardNodeEvent (cardInstance) {
