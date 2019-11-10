@@ -34,7 +34,7 @@ $( () => {
                 //passes player count as param (2, 3, or 4) to initiate next method grouping 
                 $('.player-count').eq(num).css('cursor','pointer').on('click',()=> this.createBoard(num+2));
             }
-            $('#player-count-text').css('cursor','default');
+            $('#player-count-container').css('cursor','default');
         }
 ////////////////////////////
 //////////BOARD SETUP///////
