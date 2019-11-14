@@ -6,84 +6,39 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Appstractor Interface</title>
     <link rel="stylesheet" href="/../css/main.css">
-    <link rel="stylesheet" href="/../css/iframe_thumbnail.css">
-    <script
-        src="https://code.jquery.com/jquery-3.4.1.min.js"
-        integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
-        crossorigin="anonymous">
-    </script>
+    <link rel="stylesheet" href="/../css/iframe.css">
+
+    <!-- <link rel="stylesheet" href="/../css/iframe_thumbnail.css"> -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
 </head>
 <body>
     <!-- fixed -->
     <div class="nav-container">
         <nav>
-            <a href="#" class="logo-icon">&nbspA&nbsp</a>
-            <a href="#">Render</a>    
-            <a href="#" class="active">Gallery</a>    
+            <a href="/appstractor" class="logo-icon">&nbspA&nbsp</a>
+            <a href="/appstractor/render">Render</a>    
+            <a href="/appstractor/gallery" class="active">Gallery</a>   
             <a href="#">Sign Out</a>
         </nav>
     </div>
     <!-- relative -->
     <div class="filler nav-container"></div>
-    <div class="iframe-grid">
+
         <div class="iframe-container" id="canvas">
-            <iframe src="/appstractor/canvas"></iframe>
+            <iframe src="/appstractor/saved"></iframe>
         </div>
-        <div class="iframe-container" id="canvas">
-            <iframe src="/appstractor/canvas"></iframe>
-        </div>
-        <div class="iframe-container" id="canvas">
-            <iframe src="/appstractor/canvas"></iframe>
-        </div>
-        <div class="iframe-container" id="canvas">
-            <iframe src="/appstractor/canvas"></iframe>
-        </div>
-        <div class="iframe-container" id="canvas">
-                <iframe src="/appstractor/canvas"></iframe>
-            </div>
-            <div class="iframe-container" id="canvas">
-                <iframe src="/appstractor/canvas"></iframe>
-            </div>
-            <div class="iframe-container" id="canvas">
-                <iframe src="/appstractor/canvas"></iframe>
-            </div>
-            <div class="iframe-container" id="canvas">
-                <iframe src="/appstractor/canvas"></iframe>
-            </div>
-            <div class="iframe-container" id="canvas">
-                    <iframe src="/appstractor/canvas"></iframe>
-                </div>
-                <div class="iframe-container" id="canvas">
-                    <iframe src="/appstractor/canvas"></iframe>
-                </div>
-                <div class="iframe-container" id="canvas">
-                    <iframe src="/appstractor/canvas"></iframe>
-                </div>
-                <div class="iframe-container" id="canvas">
-                    <iframe src="/appstractor/canvas"></iframe>
-                </div>
-                <div class="iframe-container" id="canvas">
-                        <iframe src="/appstractor/canvas"></iframe>
-                    </div>
-                    <div class="iframe-container" id="canvas">
-                        <iframe src="/appstractor/canvas"></iframe>
-                    </div>
-                    <div class="iframe-container" id="canvas">
-                        <iframe src="/appstractor/canvas"></iframe>
-                    </div>
-                    <div class="iframe-container" id="canvas">
-                        <iframe src="/appstractor/canvas"></iframe>
-                    </div>
+        
     </div>
     <div class="filler alt-buttons-container"></div>
     <!-- fixed -->
     <div class="alt-buttons-container">
         <div class="buttons">
-            <div class="button">
+            <div class="button" id="download">
                 <img src="/../images/download.png" class="button-image">
                 <div class="button-text"> Download </div>
             </div>     
-            <div class="button">
+            <div class="button" id="delete">
                 <img src="/../images/delete.png" class="button-image">
                 <div class="button-text"> Delete </div>
             </div>   

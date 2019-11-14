@@ -5,7 +5,7 @@
     position: relative;
     border: 1px solid white;
     max-width: 360px; 
-    height: 240px;
+    min-height: 240px;
     box-shadow: 0 5px 25px 0 rgba(0,0,0); 
 }
 
@@ -34,7 +34,7 @@ iframe {
 @media (min-width: 768px) {
     .iframe-container {
         max-width: 720px; 
-        height: 480px;
+        min-height: 480px;
     }
     iframe {
         -webkit-transform: scale(.2);
@@ -45,7 +45,7 @@ iframe {
 @media (min-width: 992px) { 
     .iframe-container {
         max-width: 900px; 
-        height: 600px;
+        min-height: 600px;
     }
     iframe {
         -webkit-transform: scale(.25);
