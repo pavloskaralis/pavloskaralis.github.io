@@ -4,75 +4,44 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <!-- <link rel="stylesheet" href="/../css/canvas.css">  -->
+    <link rel="stylesheet" href="/../css/saved_canvas.css"> 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-    <style>
-        html, body, #overlay, .top-canvas, .bottom-canvas, .background-canvas {
-        width: 3600px;
-        height: 2400px; 
-        margin: 0;
-        position: absolute;
-        }
-
-        body {
-        background-color:rgb(10,15,20);
-        }
-
-        .top-canvas {
-        display: flex; 
-        flex-wrap: wrap-reverse;
-        flex-direction: row;
-        z-index: 5;
-        justify-content: flex-end; 
-        }
-
-        .bottom-canvas { 
-        z-index: 4;
-        display: flex; 
-        flex-wrap: wrap;
-        justify-content: flex-start;
-        }
-
-        .background-canvas {
-        z-index: 3; 
-        background-position: center;
-        background-size: cover; 
-        }
-
-        .block {
-        display: flex;  
-        }
-    </style>
     <title>Saved</title>
 </head>
 <div id="temp">
-        <%= data %>
+        <%= data.dom %>
 </div>
 <script>
-    const $parse = $( '<body>' );
-    $parse.html($('#temp').text());
-    $('body').remove();
-    $('html').append($parse);
-    //remove <script> 
-    // $parse.children().eq(3).remove();
-    $('#download',parent.document).on('click', () => {
+    const downloadPNG = () => {
         const link = document.createElement('a');
         const fileName =  'appstractor.png';
         $(link).attr('download', fileName);
         $(link).attr('href','/../saved/example.png');
         link.click(); 
-        // function downloadInnerHtml(filename, elId, mimeType) {
-        // const elHtml = $(elId).html();
-        // const link = document.createElement('a');
-        // mimeType = mimeType || 'text/plain';
-        //     $(link).attr('download', filename);
-        //     $(link).attr('href', 'data:' + mimeType + ';charset=utf-8,' + encodeURIComponent(elHtml));
-        //     link.click(); 
-        // }
-        // const fileName =  'appstractor.html'; // You can use the .txt extension if you want
-        // downloadInnerHtml(fileName, 'html','text/html');
+    }
+    //re write to unest 
+    const downloadHTML = () => {
+        function downloadInnerHtml(filename, elId, mimeType) {
+        const elHtml = $(elId).html();
+        const link = document.createElement('a');
+        mimeType = mimeType || 'text/plain';
+            $(link).attr('download', filename);
+            $(link).attr('href', 'data:' + mimeType + ';charset=utf-8,' + encodeURIComponent(elHtml));
+            link.click(); 
+        }
+        const fileName =  'appstractor.html'; // You can use the .txt extension if you want
+        downloadInnerHtml(fileName, 'html','text/html');
+    }
 
+    const $parse = $( '<body>' );
+    $parse.html($('#temp').text());
+    $('body').remove();
+    $('html').append($parse);
+    //remove <script> 
+    $parse.children().eq(3).remove();
+    $('#download',parent.document).on('click', () => {
+        downloadPNG();
+        downloadHTML(); 
     });
 </script>
-
 </html>

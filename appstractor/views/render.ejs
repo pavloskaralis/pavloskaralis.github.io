@@ -22,7 +22,7 @@
     <!-- relative -->
     <div class="filler nav-container"></div>
     <div class="iframe-container" id="canvas">
-        <iframe src="/appstractor/canvas"></iframe> 
+        <iframe src="/appstractor/blank_canvas"></iframe> 
     </div>
     <div class="filler buttons-container"></div>
     <!-- fixed -->
@@ -46,8 +46,8 @@
                 <img src="/../images/shadow.png" class="button-image">
                 <div class="button-text"> Shadow </div>
             </div>  
-            <form action="/appstractor/gallery/new/?_method=PUT" method="POST">
-                <input type="text" name="html">
+            <form action="/appstractor/render/new/?_method=PUT" method="POST">
+                <input type="text" name="dom">
                 <button type="submit" class="button" id="save">
                     <img src="/../images/save.png" class="button-image">
                     <div class="button-text"> Save </div>
@@ -59,7 +59,6 @@
     <div class="overlay-color"></div>
     <div class="overlay-image"></div>
     <script>
-       
     </script>
 </body>
 </html>
