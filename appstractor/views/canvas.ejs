@@ -26,7 +26,6 @@
 
         renderAppstraction () {
             this.generated = true;
-            console.log(this.currentFocus);
             this.createCanvasBackground();  
             this.createCanvasLayer(...this.mediumBot);
             this.createCanvasLayer(...this.mediumTop);
@@ -50,7 +49,6 @@
             $('.cell').css('box-shadow', this.currentDepth);
             $('.cell').css('background-size',`${this.currentFocus[1]}%`);
             $('.background-canvas').css('background-size',`${this.currentFocus[0]}% ${this.currentFocus[0]}%`);
-            console.log(this.currentFocus);
         }
 
         toggleImage (url) {
