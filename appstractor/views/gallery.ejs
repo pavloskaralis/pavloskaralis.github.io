@@ -26,13 +26,13 @@
     <div class="filler nav-container"></div>
 
         <div class="iframe-container" id="canvas">
-            <iframe src="/appstractor/saved"></iframe>
+            <iframe src="/appstractor/saved_canvas/0"></iframe>
         </div>
         
     </div>
-    <div class="filler alt-buttons-container"></div>
+    <div class="filler buttons-container no-resize"></div>
     <!-- fixed -->
-    <div class="alt-buttons-container">
+    <div class="buttons-container no-resize">
         <div class="buttons">
             <div class="button" id="download">
                 <img src="/../images/download.png" class="button-image">
@@ -47,6 +47,36 @@
     <!-- absolute bg image -->
     <div class="overlay-color"></div>
     <div class="overlay-image"></div>
-  
+    <script>
+        //image download function
+        const downloadPNG = () => {
+            const link = document.createElement('a');
+            const fileName =  `appstractor${0}.png`;
+            $(link).attr('download', fileName);
+            $(link).attr('href',`/../saved/${fileName}`);
+            link.click(); 
+        }
+        //html download function 
+        //re write to unest 
+        const downloadHTML = () => {
+            function downloadInnerHtml(filename, elId, mimeType) {
+            const elHtml = $(elId).contents().find('html').html();
+            const link = document.createElement('a');
+            mimeType = mimeType || 'text/plain';
+                $(link).attr('download', filename);
+                $(link).attr('href', 'data:' + mimeType + ';charset=utf-8,' + encodeURIComponent(elHtml));
+                link.click(); 
+            }
+            const fileName =  `appstractor${0}.html`; // You can use the .txt extension if you want
+            downloadInnerHtml(fileName, 'iframe','text/html');
+        }
+
+        //attach download button event listener 
+        $('#download').on('click', () => {
+            downloadPNG();
+            downloadHTML(); 
+        });
+    
+    </script>
 </body>
 </html>

@@ -12,6 +12,17 @@ body {
     justify-content: space-between;
 }
 
+
+form {
+    align-self: center;
+}
+
+input[type=text] {
+    display: none; 
+}
+
+/* Background */
+/* Fixed for scrolling */
 .overlay-image {
     position: fixed;
     top: 0;
@@ -33,6 +44,10 @@ body {
     height: 100vh; 
 }
 
+
+
+/* Bars */
+/* Fixed for scrolling */
 .nav-container, .buttons-container, .alt-buttons-container {
     box-sizing: border-box;
     width: 100vw; 
@@ -55,59 +70,62 @@ body {
     z-index: 4;
 }
 
-nav {
-    width: 100vw; 
-    max-width: 992px;
-    margin-bottom: 1px; 
-    display: flex; 
-    justify-content: space-between;
-}
+    nav {
+        width: 100vw; 
+        max-width: 992px;
+        margin-bottom: 1px; 
+        display: flex; 
+        justify-content: space-between;
+    }
 
-.logo-icon{
-    color: white; 
-    align-self: initial;
-    text-align: left;
-    padding-right: 20px; 
-    font-size: 16px;
-    margin-top: 2px; 
-    text-shadow: 
-        -9px 0 rgb(255, 230, 0),
-        9px 0 rgb(255, 105, 170);
-}
+    /* home page nav icon */
+    .logo-icon{
+        color: white; 
+        align-self: initial;
+        text-align: left;
+        padding-right: 20px; 
+        font-size: 16px;
+        margin-top: 2px; 
+        text-shadow: 
+            -9px 0 rgb(255, 230, 0),
+            9px 0 rgb(255, 105, 170);
+    }
+    .logo-icon:hover {
+        text-shadow: 
+            -9px 0 rgb(255, 105, 170),
+            9px 0 rgb(255, 105, 170);
+    }
 
-.logo-icon:hover {
-    text-shadow: 
-        -9px 0 rgb(255, 105, 170),
-        9px 0 rgb(255, 105, 170);
-}
+    a, .button {
+        color: rgb(255, 230, 0);
+        font-family: Helvetica;
+        text-transform: capitalize;
+        text-decoration: none; 
+        padding: 10px 20px;
+        align-self: center;
+        font-size: 14px; 
+        text-align: center;
+        transition: .5s; 
+    }
 
-a, .button {
-    color: rgb(255, 230, 0);
-    font-family: Helvetica;
-    text-transform: capitalize;
-    text-decoration: none; 
-    padding: 10px 20px;
-    align-self: center;
-    font-size: 14px; 
-    text-align: center;
-    transition: .5s; 
-}
+    a:hover, .button:hover {
+        color: rgb(255, 105, 170);
+        transition: .5s; 
+    }
 
-a:hover, .button:hover {
-    color: rgb(255, 105, 170);
-    transition: .5s; 
-}
+    /* nav link of current page */
+    .active  {
+        color: white;
+    }
+    
 
 .button:hover {
     border: 1px rgb(255, 105, 170) solid;
     cursor: pointer;
 }
 
-.active  {
-    color: white;
-}
 
-.buttons-container, .alt-buttons-container {
+.buttons-container {
     z-index: 3;
     min-height: 240px; 
     background-image: linear-gradient(
@@ -119,7 +137,8 @@ a:hover, .button:hover {
     bottom: 0; 
 }
 
-.alt-buttons-container {
+/* overrides buttons-container @media for gallery page */
+.no-resize {
     min-height: 120px; 
     background-image: linear-gradient(
     to bottom,
@@ -150,13 +169,6 @@ a:hover, .button:hover {
     outline: none; 
 }
 
-form {
-    align-self: center;
-}
-input[type=text] {
-    display: none; 
-}
-
 .button-image {
     width: 45px;
     height: 45px; 
@@ -170,6 +182,7 @@ input[type=text] {
     align-self: center;
 }
 
+/* Aligns content between Bars */
 .filler {
     z-index: 1;
     position: relative;
@@ -177,6 +190,11 @@ input[type=text] {
     overflow: hidden;
     opacity: 0;
 }
+
+
+
+
+
 
 @media (min-width: 576px) {
 

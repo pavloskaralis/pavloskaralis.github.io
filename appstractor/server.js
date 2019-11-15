@@ -27,7 +27,7 @@ app.get('/appstractor/render', (req,res) => {
 
 //Show
 app.get('/appstractor/gallery', (req,res) => {
-    res.render('gallery.ejs',{data:data });  
+    res.render('gallery.ejs',{data:data});  
 });
 
 //Iframe within Create
@@ -37,13 +37,13 @@ app.get('/appstractor/blank_canvas', (req,res) => {
 
 //Iframe within Show, only if user browser does not support capture-chrome npm 
 app.get('/appstractor/saved_canvas/:index', (req,res) => {
-    res.render('saved.ejs',{data: data[req.params.index]});
+    res.render('saved_canvas.ejs',{data: data[req.params.index]});
 }); 
 //PUT
 app.put('/appstractor/render/new', (req, res) => {
     //creates document
     const document = {
-        id: data.length,
+        index: data.length,
         dom: req.body.dom,
         img: null
     }
@@ -58,7 +58,7 @@ app.put('/appstractor/render/new', (req, res) => {
         console.log('image saved')
     });
     //the newly created image path then gets stored in the document 
-    data[data.length - 1].img = `${__dirname}/public/saved/appstractor${data.length - 1}.png`; 
+    data[data.length - 1].img = `/../saved/appstractor${data.length - 1}.png`; 
     res.status(204).send();
 });
 

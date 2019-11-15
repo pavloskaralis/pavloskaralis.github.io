@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <title>Saved</title>
+    <!-- style must be in body to render html download -->
+    <style>
+        html, body, #overlay, .top-canvas, .bottom-canvas, .background-canvas {
+            width: 3600px;
+            height: 2400px; 
+            margin: 0;
+            position: absolute;
+        }
+
+        body {
+            background-color:rgb(10,15,20);
+        }
+
+        .top-canvas {
+            display: flex; 
+            flex-wrap: wrap-reverse;
+            flex-direction: row;
+            z-index: 5;
+            justify-content: flex-end; 
+        }
+            
+        .bottom-canvas { 
+            z-index: 4;
+            display: flex; 
+            flex-wrap: wrap;
+            justify-content: flex-start;
+        }
+
+        .background-canvas {
+            z-index: 3; 
+            background-position: center;
+            background-size: cover; 
+        }
+
+        .block {
+            display: flex;  
+        }
+    </style>
+</head>
+<body>
+    <!-- necessary to pass data to script -->
+    <div id="index">
+        <%= data.index %>
+    </div>
+    <div id="dom">
+        <%= data.dom %>
+    </div>
+    <div id="img">
+        <%= data.img %>
+    </div>
+</body>
+<script>
+    //store data for buttons before it gets removed 
+    const docIndex = parseFloat($('#index').text()); 
+    const docImg = $('#img').text(); 
+    //create a new body
+    const $parse = $( '<body>' );
+    //set new body's html via .text() to parse data string 
+    $parse.html($('#dom').text());
+    //remove initial body
+    $('body').remove();
+    //add new body 
+    $('html').append($parse);
+    //remove <script> from new body 
+    $parse.children().eq(3).remove();
+</script>
+</html>
