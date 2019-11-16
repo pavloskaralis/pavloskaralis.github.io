@@ -32,7 +32,7 @@ app.get('/appstractor/gallery', (req,res) => {
 
 //Iframe within Create
 app.get('/appstractor/blank_canvas', (req,res) => {
-    res.render('blank_canvas.ejs', {data: data});
+    res.render('blank_canvas.ejs');
 });
 
 //Iframe within Show, only if user browser does not support capture-chrome npm 
