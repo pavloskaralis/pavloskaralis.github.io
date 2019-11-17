@@ -15,10 +15,6 @@
             position: absolute;
         }
 
-        body {
-            background-color:rgb(10,15,20);
-        }
-
         .top-canvas {
             display: flex; 
             flex-wrap: wrap-reverse;
@@ -41,35 +37,30 @@
         }
 
         .block {
-            display: flex;  
+            display: flex; 
         }
     </style>
 </head>
-<body>
+<body id="old">
     <!-- necessary to pass data to script -->
-    <div id="index">
-        <%= data.index %>
-    </div>
     <div id="dom">
-        <%= data.dom %>
+        <%= doc.dom %>
     </div>
-    <div id="img">
-        <%= data.img %>
-    </div>
+    <script>
+        const renderSaved = () => {
+            //create a new body
+            const $parse = $( '<body>' ).attr('id','new');
+            //set new body's html via .text() to parse data string 
+            $parse.html($('#dom').text());
+            //add new body 
+            $('html').append($parse);
+            //remove <script> from new body 
+            $parse.children().eq(4).remove();
+            //remove initial body
+            $('#old').remove();
+        }
+        renderSaved();
+    </script>
 </body>
-<script>
-    //store data for buttons before it gets removed 
-    const docIndex = parseFloat($('#index').text()); 
-    const docImg = $('#img').text(); 
-    //create a new body
-    const $parse = $( '<body>' );
-    //set new body's html via .text() to parse data string 
-    $parse.html($('#dom').text());
-    //remove initial body
-    $('body').remove();
-    //add new body 
-    $('html').append($parse);
-    //remove <script> from new body 
-    $parse.children().eq(3).remove();
-</script>
+
 </html>

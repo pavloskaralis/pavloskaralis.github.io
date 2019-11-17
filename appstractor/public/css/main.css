@@ -117,13 +117,6 @@ input[type=text] {
     .active  {
         color: white;
     }
-    
-
-.button:hover {
-    border: 1px rgb(255, 105, 170) solid;
-    cursor: pointer;
-}
-
 
 .buttons-container {
     z-index: 3;
@@ -137,50 +130,44 @@ input[type=text] {
     bottom: 0; 
 }
 
-/* overrides buttons-container @media for gallery page */
-.no-resize {
-    min-height: 120px; 
-    background-image: linear-gradient(
-    to bottom,
-    rgba(20,25,30) 4%, 
-    rgba(5,10,15) 8%,
-    rgba(5,10,15)
-    ); 
-}
+    .buttons {
+        flex-wrap: wrap;
+        max-width: 500px;
+        width: 100vw;
+        display: flex; 
+        justify-content: space-evenly;
+    }
 
-.buttons {
-    flex-wrap: wrap;
-    max-width: 500px;
-    width: 100vw;
-    display: flex; 
-    justify-content: space-evenly;
-}
+    .button {
+        display: flex;
+        flex-direction: column;
+        max-width: 87px; 
+        margin: 0 20px; 
+        margin-top: 7px; 
+        border: rgba(5,10,15) 1px solid;
+        border-radius: 5px; 
+        box-sizing: border-box;
+        background-color: rgba(0,0,0,0);
+        outline: none; 
+    }
 
-.button {
-    display: flex;
-    flex-direction: column;
-    max-width: 87px; 
-    margin: 0 20px; 
-    margin-top: 7px; 
-    border: rgba(5,10,15) 1px solid;
-    border-radius: 5px; 
-    box-sizing: border-box;
-    background-color: rgba(0,0,0,0);
-    outline: none; 
-}
+    .button-image {
+        width: 45px;
+        height: 45px; 
+        align-self: center; 
+        background-size: cover;
+        margin-bottom: 10px;
+        opacity: .98;
+    }
 
-.button-image {
-    width: 45px;
-    height: 45px; 
-    align-self: center; 
-    background-size: cover;
-    margin-bottom: 10px;
-    opacity: .98;
-}
+    .button-text {
+        align-self: center;
+    }
 
-.button-text {
-    align-self: center;
-}
+    .button:hover {
+        border: 1px rgb(255, 105, 170) solid;
+        cursor: pointer;
+    }
 
 /* Aligns content between Bars */
 .filler {

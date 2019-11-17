@@ -27,7 +27,7 @@ app.get('/appstractor/render', (req,res) => {
 
 //Show
 app.get('/appstractor/gallery', (req,res) => {
-    res.render('gallery.ejs',{data:data});  
+    res.render('gallery.ejs',{data: data});  
 });
 
 //Iframe within Create
@@ -37,7 +37,7 @@ app.get('/appstractor/blank_canvas', (req,res) => {
 
 //Iframe within Show, only if user browser does not support capture-chrome npm 
 app.get('/appstractor/saved_canvas/:index', (req,res) => {
-    res.render('saved_canvas.ejs',{data: data[req.params.index]});
+    res.render('saved_canvas.ejs',{doc: data[req.params.index]});
 }); 
 //PUT
 app.put('/appstractor/render/new', (req, res) => {
@@ -45,7 +45,7 @@ app.put('/appstractor/render/new', (req, res) => {
     const document = {
         index: data.length,
         dom: req.body.dom,
-        img: null
+        img: `/../saved/appstractor${data.length}.png`
     }
     data.push(document);
     //once document is created, its dom property can be passed to /saved/:index to be rendered, then captured 
@@ -57,8 +57,6 @@ app.put('/appstractor/render/new', (req, res) => {
         fs.writeFileSync(`${__dirname}/public/saved/appstractor${data.length - 1}.png`, screenshot)
         console.log('image saved')
     });
-    //the newly created image path then gets stored in the document 
-    data[data.length - 1].img = `/../saved/appstractor${data.length - 1}.png`; 
     res.status(204).send();
 });
 

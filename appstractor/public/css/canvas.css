@@ -5,10 +5,6 @@ html, body, #overlay, .top-canvas, .bottom-canvas, .background-canvas {
     position: absolute;
 }
 
-body {
-    background-color:rgb(10,15,20);
-}
-
 .top-canvas {
     display: flex; 
     flex-wrap: wrap-reverse;

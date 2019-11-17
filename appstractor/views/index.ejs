@@ -39,52 +39,50 @@
     <div class="overlay-image"></div>
     <script>
         class Background {
-    constructor () {
-        this.unchanged = [];
-        this.changed = []; 
-    }
-    initialize () {
-        this.renderImages();
-        this.selectVisible();
-        this.renderAnimation();
-    }
-    renderImages () {
-        for(let i = 0; i < 5; i ++) {
-            for (let i = 1; i <= 20; i ++) {
-                const $image = $('<div>').addClass('image');
-                $image.css('background-image',`url('./images/home${i}.png')`);
-                $('.image-grid').append($image);
+            constructor () {
+                this.unchanged = [];
+                this.changed = []; 
             }
+            initialize () {
+                this.renderImages();
+                this.selectVisible();
+                this.renderAnimation();
+            }
+            renderImages () {
+                for(let i = 0; i < 5; i ++) {
+                    for (let i = 1; i <= 20; i ++) {
+                        const $image = $('<div>').addClass('image');
+                        $image.css('background-image',`url('./images/home${i}.png')`);
+                        $('.image-grid').append($image);
+                    }
+                }
+            }
+            selectVisible () {
+                for(let i = 0; i < 60; i ++) {
+                    this.unchanged.push($('.image').eq(i));
+                }
+                console.log(this.unchanged);
+            }
+            resetProperties () {
+                this.unchanged = this.changed; 
+                this.changed = [];
+            }
+            renderAnimation () {
+                setInterval( () => {
+                    this.unchanged.length === 0 ? this.resetProperties() : null; 
+                    const $random = this.unchanged.length > 53 ? 
+                        this.unchanged[42] : this.unchanged[Math.floor(Math.random() * this.unchanged.length)];
+                    const num = Math.floor(Math.random() * 20) + 1; 
+                    $random.css('opacity', '.9').css('background-image', `url('./images/home${num}.png')`);
+                    setTimeout(()=>$random.css('opacity', '.35').css('background-image', `url('./images/home${num}.png')`),1000);
+                    this.changed.push($random);
+                    this.unchanged.splice(this.unchanged.indexOf($random),1); 
+                }, 200);
+            }   
         }
-    }
-    selectVisible () {
-        for(let i = 0; i < 60; i ++) {
-            this.unchanged.push($('.image').eq(i));
-        }
-        console.log(this.unchanged);
-    }
-    resetProperties () {
-        this.unchanged = this.changed; 
-        this.changed = [];
-    }
-    renderAnimation () {
-        setInterval( () => {
-            this.unchanged.length === 0 ? this.resetProperties() : null; 
-            const $random = this.unchanged.length > 53 ? 
-                this.unchanged[42] : this.unchanged[Math.floor(Math.random() * this.unchanged.length)];
-            const num = Math.floor(Math.random() * 20) + 1; 
-            $random.css('opacity', '.9').css('background-image', `url('./images/home${num}.png')`);
-            setTimeout(()=>$random.css('opacity', '.35').css('background-image', `url('./images/home${num}.png')`),1000);
-            this.changed.push($random);
-            this.unchanged.splice(this.unchanged.indexOf($random),1); 
-        }, 200);
-    }   
-}
 
-const background = new Background;
-background.initialize();
-
-
-</script>
+        const background = new Background;
+        background.initialize();
+    </script>
 </body>
 </html>

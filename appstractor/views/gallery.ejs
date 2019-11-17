@@ -24,20 +24,28 @@
     </div>
     <!-- relative -->
     <div class="filler nav-container"></div>
-
-        <div class="iframe-container" id="canvas">
-            <iframe src="/appstractor/saved_canvas/0"></iframe>
+            <div class="iframe-container" id="canvas">
+                    <div class="left-arrow"> < </div>
+                    <div class="right-arrow"> > </div>
+                    <!-- faster load -->
+                    <img class="iframe-bg" src=<%= data[0].img %> />
+                    <!-- backup for non chrome browsers -->
+                    <!-- <iframe src="/appstractor/saved_canvas/<%= 0 %>"></iframe> -->
+            </div>
         </div>
-        
     </div>
-    <div class="filler buttons-container no-resize"></div>
+    <div class="filler buttons-container"></div>
     <!-- fixed -->
-    <div class="buttons-container no-resize">
+    <div class="buttons-container">
         <div class="buttons">
+            <div class="button" id="edit">
+                    <img src="/../images/render.png" class="button-image">
+                    <div class="button-text"> Edit </div>
+            </div>
             <div class="button" id="download">
                 <img src="/../images/download.png" class="button-image">
                 <div class="button-text"> Download </div>
-            </div>     
+            </div>      
             <div class="button" id="delete">
                 <img src="/../images/delete.png" class="button-image">
                 <div class="button-text"> Delete </div>
