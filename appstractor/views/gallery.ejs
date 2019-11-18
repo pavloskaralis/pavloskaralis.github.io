@@ -104,11 +104,11 @@
              //html download function 
             downloadHTML = () => {
                 const link = document.createElement('a');
-                const fileName =  `appstractor${this.currentIndex}.html`; 
+                const fileName = `appstractor${this.currentIndex}.html`; 
                 const html = $('iframe').contents().find('html').html();
-                mimeType = mimeType || 'text/plain';
-                $(link).attr('download', filename);
-                $(link).attr('href', 'data:' + mimeType + ';charset=utf-8,' + encodeURIComponent(html));
+                console.log($('iframe').contents().find('html').html())
+                $(link).attr('download', fileName);
+                $(link).attr('href', 'data:' + 'text/plain' + ';charset=utf-8,' + encodeURIComponent(html));
                 link.click();  
             }
             addEventListeners () {
