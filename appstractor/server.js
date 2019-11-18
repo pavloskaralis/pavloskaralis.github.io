@@ -17,7 +17,7 @@ app.use(express.json({limit: '50mb', extended: true}));
 //GET
 //Index
 app.get('/appstractor', (req,res) => {
-    res.render('index.ejs');
+    res.render('home.ejs');
 });
 
 //Create
@@ -25,19 +25,19 @@ app.get('/appstractor/render', (req,res) => {
     res.render('render.ejs');
 });
 
-//Show
-app.get('/appstractor/gallery', (req,res) => {
-    res.render('gallery.ejs',{data: data});  
-});
-
 //Iframe within Create
 app.get('/appstractor/blank_canvas', (req,res) => {
     res.render('blank_canvas.ejs');
 });
 
+//Show
+app.get('/appstractor/gallery', (req,res) => {
+    res.render('gallery.ejs',{data: data});  
+});
+
 //Iframe within Show
 app.get('/appstractor/saved_canvas/:index', (req,res) => {
-    res.render('saved_canvas.ejs',{doc: data[req.params.index]});
+    res.render('saved_canvas.ejs',{data: data, doc: data[req.params.index]});
 }); 
 
 //PUT
