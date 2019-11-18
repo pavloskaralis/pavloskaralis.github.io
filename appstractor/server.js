@@ -35,10 +35,11 @@ app.get('/appstractor/blank_canvas', (req,res) => {
     res.render('blank_canvas.ejs');
 });
 
-//Iframe within Show, only if user browser does not support capture-chrome npm 
+//Iframe within Show
 app.get('/appstractor/saved_canvas/:index', (req,res) => {
     res.render('saved_canvas.ejs',{doc: data[req.params.index]});
 }); 
+
 //PUT
 app.put('/appstractor/render/new', (req, res) => {
     //creates document
