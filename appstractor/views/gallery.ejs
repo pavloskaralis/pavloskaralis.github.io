@@ -12,6 +12,9 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
 </head>
+<div id="length" style="display: none">
+    <%= data.length %>
+</div>
 <body>
     <!-- fixed -->
     <div class="nav-container">
@@ -24,15 +27,10 @@
     </div>
     <!-- relative -->
     <div class="filler nav-container"></div>
-            <div class="iframe-container" id="canvas">
-                    <div class="left-arrow"> < </div>
-                    <div class="right-arrow"> > </div>
-                    <!-- faster load -->
-                    <img class="iframe-bg" src=<%= data[0].img %> />
-                    <!-- backup for non chrome browsers -->
-                    <!-- <iframe src="/appstractor/saved_canvas/<%= 0 %>"></iframe> -->
-            </div>
-        </div>
+    <div class="iframe-container" id="canvas">
+        <div id="left-arrow"> < </div>
+        <div id="right-arrow"> > </div>
+        <iframe src="/appstractor/saved_canvas/<%= 0 %>"></iframe>
     </div>
     <div class="filler buttons-container"></div>
     <!-- fixed -->
@@ -56,35 +54,110 @@
     <div class="overlay-color"></div>
     <div class="overlay-image"></div>
     <script>
-        //image download function
-        const downloadPNG = () => {
-            const link = document.createElement('a');
-            const fileName =  `appstractor${0}.png`;
-            $(link).attr('download', fileName);
-            $(link).attr('href',`/../saved/${fileName}`);
-            link.click(); 
-        }
-        //html download function 
-        //re write to unest 
-        const downloadHTML = () => {
-            function downloadInnerHtml(filename, elId, mimeType) {
-            const elHtml = $(elId).contents().find('html').html();
-            const link = document.createElement('a');
-            mimeType = mimeType || 'text/plain';
-                $(link).attr('download', filename);
-                $(link).attr('href', 'data:' + mimeType + ';charset=utf-8,' + encodeURIComponent(elHtml));
+        class Gallery {
+            constructor() {
+                this.currentIndex = 0
+                this.dataLength = $('#length').text();
+            }
+            initialize = () => {
+                this.addEventListeners();
+                this.removeDataDiv();
+                this.toggleArrows();
+            }
+            removeDataDiv = () => {
+                $('#length').remove();
+            }
+            toggleArrows = () => {
+                this.currentIndex === 0 ? 
+                    $('#left-arrow').css('display','none') : $('#left-arrow').css('display','');
+                (this.currentIndex === this.dataLength - 1) || (this.dataLength < 1) ? 
+                    $('#right-arrow').css('display','none') : $('#right-arrow').css('display','');
+            }
+            //prevents fast clicking
+            lockArrows = () => {
+                $('#left-arrow').css('pointer-events','none');
+                $('#right-arrow').css('pointer-events','none');
+                setTimeout(()=> {
+                    $('#left-arrow').css('pointer-events','auto');
+                    $('#right-arrow').css('pointer-events','auto');
+                }, 250);
+            }
+            //prevents blank container on load in
+            toggleIframes = () => {
+                const $iframe = $('<iframe>').attr('src',`/appstractor/saved_canvas/${this.currentIndex}`);
+                $iframe.insertAfter($('iframe'));
+                //prevents fast clicking for causing population error
+                setTimeout(()=> {
+                    for(let i = 0; i < $('iframe').length - 1; i++){
+                        $('iframe').eq(i).remove()
+                    }
+                }, 250); 
+            }
+            //image download function
+            downloadPNG = () => {
+                const link = document.createElement('a');
+                const fileName =  `appstractor${this.currentIndex}.png`;
+                $(link).attr('download', fileName);
+                $(link).attr('href',`/../saved/${fileName}`);
                 link.click(); 
             }
-            const fileName =  `appstractor${0}.html`; // You can use the .txt extension if you want
-            downloadInnerHtml(fileName, 'iframe','text/html');
+             //html download function 
+            downloadHTML = () => {
+                const link = document.createElement('a');
+                const fileName =  `appstractor${this.currentIndex}.html`; 
+                const html = $('iframe').contents().find('html').html();
+                mimeType = mimeType || 'text/plain';
+                $(link).attr('download', filename);
+                $(link).attr('href', 'data:' + mimeType + ';charset=utf-8,' + encodeURIComponent(html));
+                link.click();  
+            }
+            addEventListeners () {
+                $('#left-arrow').on('click', () => {
+                    this.currentIndex -= 1;
+                    this.lockArrows(); 
+                    this.toggleIframes();
+                    this.toggleArrows();
+                });
+                $('#right-arrow').on('click', () => {
+                    this.currentIndex += 1;
+                    this.lockArrows(); 
+                    this.toggleIframes();
+                    this.toggleArrows();
+                });
+                $('#download').on('click', () => {
+                    this.downloadPNG();
+                    this.downloadHTML(); 
+                });
+            }
         }
+       const gallery = new Gallery;
+       gallery.initialize(); 
+       
+    //    //gallery keybinding
+    //     $(document).keydown(function(e) {
+    //         switch(e.which) {
+    //             case 37 : {
+    //                 gallery.currentIndex !== 0 ? 
+    //                     gallery.currentIndex -= 1 : null; 
+    //                 gallery.lockArrows(); 
+    //                 gallery.toggleIframes();
+    //                 gallery.toggleArrows();
+    //             }
+    //             break;
 
-        //attach download button event listener 
-        $('#download').on('click', () => {
-            downloadPNG();
-            downloadHTML(); 
-        });
-    
+    //             case 39: {
+    //                 (gallery.currentIndex !== gallery.dataLength - 1) || (gallery.dataLength < 1) ?
+    //                     gallery.currentIndex += 1 : null; 
+    //                 gallery.lockArrows(); 
+    //                 gallery.toggleIframes();
+    //                 gallery.toggleArrows();
+    //             }
+    //             break;
+
+    //             default: return; 
+    //         }
+    //         e.preventDefault();
+    //     });
     </script>
 </body>
 </html>
