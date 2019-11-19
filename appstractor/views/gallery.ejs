@@ -69,6 +69,11 @@
                 this.addEventListeners();
                 this.removeDataDiv();
                 this.toggleArrows();
+                this.dataCheck();
+            }
+            dataCheck () {
+               this.dataLength < 1 ? 
+                    $('.button',parent.document).css('opacity','.5').css('pointer-events','none') : null;
             }
             //removes invisible div that transfers data to script
             removeDataDiv = () => {
@@ -131,6 +136,7 @@
                 this.lockArrows(); 
                 this.toggleIframes();
                 this.toggleArrows();
+                this.dataCheck();
             }
             addEventListeners () {
                 $('#left-arrow').on('click', () => {
@@ -148,7 +154,8 @@
                 $('#delete').on('click', () => {
                     $('input').val(this.currentIndex);
                     this.dataLength > 0 ? this.dataLength -= 1 : null;
-                    this.currentIndex === this.dataLength ? this.currentIndex -= 1 : null; 
+                    (this.currentIndex === this.dataLength) && (this.dataLength > 0)? 
+                        this.currentIndex -= 1 : null; 
                     this.updateGallery();                    
                 }); 
             }
