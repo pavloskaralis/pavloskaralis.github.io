@@ -15,6 +15,15 @@
 <div id="length" style="display: none">
     <%= data.length %>
 </div>
+<!-- used to save unqiue file names on user download -->
+<div id="docIDs" style="display: none">
+    <%  const docIDs = [null];
+        for(let i = 0; i <data.length; i++) { 
+            docIDs.push(data[i].id);
+        } 
+        docIDs.push(null) %>
+    <%= docIDs %>
+</div>
 <body>
     <!-- fixed -->
     <div class="nav-container">
@@ -40,14 +49,15 @@
                     <img src="/../images/render.png" class="button-image">
                     <div class="button-text"> Edit </div>
             </div>
-            <div class="button" id="download">
-                <img src="/../images/download.png" class="button-image">
-                <div class="button-text"> Download </div>
-            </div>  
             <!-- action route reassigned via jQuery within page script -->
-            <form action="/appstractor/saved_canvas/0/?_method=DELETE" method="POST" class="button-form">
-                <!-- value assigned via jQuery within page script -->
-                <input type="text" name="index" class="input-hide">
+            <form action="/appstractor/saved_canvas/0/download" method="POST" class="button-form" id="download-form">
+                <button type="submit" class="button center" id="download">
+                    <img src="/../images/download.png" class="button-image">
+                    <div class="button-text"> Download </div>
+                </button>  
+            </form>   
+            <!-- action route reassigned via jQuery within page script -->
+            <form action="/appstractor/saved_canvas/0/?_method=DELETE" method="POST" class="button-form" id="delete-form">
                 <button type="submit" class="button" id="delete">
                     <img src="/../images/delete.png" class="button-image">
                     <div class="button-text"> Delete </div>
@@ -64,20 +74,75 @@
                 this.currentIndex = 0
                 //transfers data to script
                 this.dataLength = $('#length').text();
+                this.docIDs = $('#docIDs').text().split(',');
             }
             initialize = () => {
+                this.docIDs.splice(0,1);
+                this.docIDs.pop();
+                this.removeDataDivs();
+                //disables buttons on load in if gallery is empty
+                this.dataLength < 1 ? $('.button',parent.document).css('opacity','.5').css('pointer-events','none') : null;
+                this.toggleArrows();    
                 this.addEventListeners();
-                this.removeDataDiv();
-                this.toggleArrows();
-                this.dataCheck();
             }
-            dataCheck () {
-               this.dataLength < 1 ? 
-                    $('.button',parent.document).css('opacity','.5').css('pointer-events','none') : null;
-            }
-            //removes invisible div that transfers data to script
-            removeDataDiv = () => {
+            //removes invisible divs that transfer data to script
+            removeDataDivs = () => {
                 $('#length').remove();
+                $('#docIDs').remove();
+            }
+            addEventListeners () {
+                $('#left-arrow').on('click', () => {
+                    this.currentIndex -= 1
+                    this.updateGallery(); 
+                });
+                $('#right-arrow').on('click', () => {
+                    this.currentIndex += 1
+                    this.updateGallery();
+                });
+                //also submits current index to download route
+                $('#download').on('click', () => {
+                    this.disableButtons(6000);
+                    setTimeout( () => { 
+                        this.downloadPNG();
+                        this.downloadHTML(); 
+                    },6000);
+                });
+                //also submits current index to delete route
+                $('#delete').on('click', () => {
+                    //prevents spamming of delete button and accidental deletes
+                    this.disableButtons(500);
+                    //reduces data length on deletion 
+                    this.dataLength > 0 ? this.dataLength -= 1 : null;
+                    //removes current index's id from docIDs array to sync with data length
+                    this.dataLength > 0 ? this.docIDs.splice(this.currentIndex, 1) : null;
+                    //if last image deleted, renders previous; otherwise, renders proceeding
+                    (this.currentIndex === this.dataLength) && (this.dataLength > 0)? 
+                        this.currentIndex -= 1 : null; 
+                    //forces update to wait until properties are updated to prevent incorrect render
+                    setTimeout(()=> this.updateGallery(), 0); 
+                }); 
+            }
+
+            //groups all non destructive update methods
+            updateGallery () {
+                this.updateFormActions(); 
+                this.lockArrows(); 
+                this.toggleIframes();
+                this.toggleArrows();
+            }
+            //syncs forms with current iframe index
+            updateFormActions () {
+                $('#download-form').attr('action',`/appstractor/saved_canvas/${this.currentIndex}/download`);
+                $('#delete-form').attr('action',`/appstractor/saved_canvas/${this.currentIndex}/?_method=DELETE`);
+            }
+            //prevents fast clicking
+            lockArrows = () => {
+                $('#left-arrow').css('pointer-events','none');
+                $('#right-arrow').css('pointer-events','none');
+                setTimeout(()=> {
+                    $('#left-arrow').css('pointer-events','auto');
+                    $('#right-arrow').css('pointer-events','auto');
+                }, 200);
             }
             //prevents gallery from surpassing data length
             toggleArrows = () => {
@@ -88,106 +153,50 @@
                 (this.currentIndex === this.dataLength - 1) || (this.dataLength < 1) ? 
                     $('#right-arrow').css('display','none') : $('#right-arrow').css('display','');
             }
-            //prevents fast clicking
-            lockArrows = () => {
-                $('#left-arrow').css('pointer-events','none');
-                $('#right-arrow').css('pointer-events','none');
-                setTimeout(()=> {
-                    $('#left-arrow').css('pointer-events','auto');
-                    $('#right-arrow').css('pointer-events','auto');
-                }, 250);
-            }
             //prevents blank container on load in
-            toggleIframes = (num) => {
-                num = num || 0; 
-                const $iframe = $('<iframe>').attr('src',`/appstractor/saved_canvas/${this.currentIndex - num}`);
+            toggleIframes = () => { 
+                const $iframe = $('<iframe>').attr('src',`/appstractor/saved_canvas/${this.currentIndex}`);
                 $iframe.insertAfter($('iframe'));
-                //prevents fast clicking for causing population error
+                //prevents fast clicking from causing population error
                 setTimeout(()=> {
                     for(let i = 0; i < $('iframe').length - 1; i++){
                         $('iframe').eq(i).remove()
                     }
-                }, 250); 
+                }, 200); 
             }
+
+            disableButtons (num) {
+                $('#left-arrow').css('pointer-events','none');
+                $('#right-arrow').css('pointer-events','none');
+                $('.button').css('opacity','.5').css('pointer-events','none');
+                setTimeout( () => {
+                    $('#left-arrow').css('pointer-events','auto');
+                    $('#right-arrow').css('pointer-events','auto');
+                    //buttons remain disabled when gallery fully empties
+                    this.dataLength > 0 ? 
+                        $('.button').css('opacity','1').css('pointer-events','auto') : null; 
+                },num);
+            }
+
             //image download function
             downloadPNG = () => {
                 const link = document.createElement('a');
-                const fileName =  `appstractor${this.currentIndex}.png`;
-                $(link).attr('download', fileName);
-                $(link).attr('href',`/../saved/${fileName}`);
+                $(link).attr('download', `appstractor${this.docIDs[this.currentIndex]}.png`);
+                $(link).attr('href', `/./saved/appstractor.png`);
                 link.click(); 
             }
             //html download function 
             downloadHTML = () => {
                 const link = document.createElement('a');
-                const fileName = `appstractor${this.currentIndex}.html`; 
                 const html = $('iframe').contents().find('html').html();
-                console.log($('iframe').contents().find('html').html())
-                $(link).attr('download', fileName);
+                $(link).attr('download', `appstractor${this.docIDs[this.currentIndex]}.html`);
                 $(link).attr('href', 'data:' + 'text/plain' + ';charset=utf-8,' + encodeURIComponent(html));
                 link.click();  
             }
-            //syncs delete form with current iframe index
-            updateFormAction () {
-                $('form').attr('action',`/appstractor/saved_canvas/${this.currentIndex}/?_method=DELETE`)
-            }
-            updateGallery () {
-                this.updateFormAction(); 
-                this.lockArrows(); 
-                this.toggleIframes();
-                this.toggleArrows();
-                this.dataCheck();
-            }
-            addEventListeners () {
-                $('#left-arrow').on('click', () => {
-                    this.currentIndex -= 1;
-                    this.updateGallery(); 
-                });
-                $('#right-arrow').on('click', () => {
-                    this.currentIndex += 1;
-                    this.updateGallery();
-                });
-                $('#download').on('click', () => {
-                    this.downloadPNG();
-                    this.downloadHTML(); 
-                });
-                $('#delete').on('click', () => {
-                    $('input').val(this.currentIndex);
-                    this.dataLength > 0 ? this.dataLength -= 1 : null;
-                    (this.currentIndex === this.dataLength) && (this.dataLength > 0)? 
-                        this.currentIndex -= 1 : null; 
-                    this.updateGallery();                    
-                }); 
-            }
         }
-       const gallery = new Gallery;
-       gallery.initialize(); 
-       
-    //    //gallery keybinding
-    //     $(document).keydown(function(e) {
-    //         switch(e.which) {
-    //             case 37 : {
-    //                 gallery.currentIndex !== 0 ? 
-    //                     gallery.currentIndex -= 1 : null; 
-    //                 gallery.lockArrows(); 
-    //                 gallery.toggleIframes();
-    //                 gallery.toggleArrows();
-    //             }
-    //             break;
-
-    //             case 39: {
-    //                 (gallery.currentIndex !== gallery.dataLength - 1) || (gallery.dataLength < 1) ?
-    //                     gallery.currentIndex += 1 : null; 
-    //                 gallery.lockArrows(); 
-    //                 gallery.toggleIframes();
-    //                 gallery.toggleArrows();
-    //             }
-    //             break;
-
-    //             default: return; 
-    //         }
-    //         e.preventDefault();
-    //     });
+        const gallery = new Gallery;
+        gallery.initialize(); 
+    
     </script>
 </body>
 </html>

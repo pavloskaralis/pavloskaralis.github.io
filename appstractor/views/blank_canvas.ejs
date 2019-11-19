@@ -154,11 +154,11 @@
             $('.top-canvas').eq(0).css('z-index','2');
         }
 
-        disableButtons () {
+        disableButtons (num) {
                 $('.button',parent.document).css('opacity','.5').css('pointer-events','none');
                 setTimeout( () => {
                     $('.button',parent.document).css('opacity','1').css('pointer-events','auto');
-                },2000);
+                },num);
         }
 
         //easier to access parent nodes from iframe, than iframe script from parent window
@@ -168,7 +168,7 @@
             });
             $('#render',parent.document).on('click', (event) => {
                 image.renderAppstraction();
-                this.disableButtons();
+                this.disableButtons(2000);
             });
             $('#detail',parent.document).on('click', () => {
                 image.toggleDetail();
@@ -178,7 +178,7 @@
             });
             $('#save',parent.document).on('click', () => {
                 $('input',parent.document).val($('body').html());
-                this.disableButtons();
+                this.disableButtons(500);
             }); 
         }
     }

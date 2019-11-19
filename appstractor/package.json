@@ -17,6 +17,7 @@
     "express-react-views": "^0.11.0",
     "fs": "0.0.1-security",
     "method-override": "^3.0.0",
+    "mongoose": "^5.7.11",
     "react": "^16.12.0",
     "react-dom": "^16.12.0"
   }

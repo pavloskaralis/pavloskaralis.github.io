@@ -171,10 +171,18 @@ body {
 /* Transforms button into input form */
 .button-form {
     align-self: center;
+    display: flex; 
+    flex-direction: row;
+    justify-content: center;
 }
 
 .input-hide {
-    display: none; 
+    display: none;
+}
+
+/* issue with text length in button type submit  */
+.center {
+    padding-left: 11.5px; 
 }
 
 
@@ -185,6 +193,7 @@ body {
 @media (min-width: 768px) {
     .button {
         margin: 0; 
+        margin-top: 7px;
     }
     .buttons {
         max-width: 992px;

@@ -6,6 +6,11 @@ const data = [];
 const capture = require('capture-chrome');
 const fs = require('fs');
 
+// const mongoose = require('mongoose');
+// const mongooseURI = 'mongodb://localhost:27017/' + `appstraction`;
+// const db = mongoose.connect; 
+// const appstraction = require('/./models/appstraction.js');
+
 app.use(express.static('public'));
 
 app.use(methodOverride('_method'));
@@ -40,33 +45,39 @@ app.get('/appstractor/saved_canvas/:index', (req,res) => {
     res.render('saved_canvas.ejs',{data: data, doc: data[req.params.index]});
 }); 
 
-//PUT
-app.put('/appstractor/render/new', (req, res) => {
+//POST: Save
+app.post('/appstractor/blank_canvas/save', (req, res) => {
     //creates document
-    //no need to - 1 since data not yet pushed
     const document = {
-        index: data.length,
+        id: Math.round(Math.random() * 1000000), 
         dom: req.body.dom,
-        img: `/../saved/appstractor${data.length}.png`
     }
     data.push(document);
-    //once document is created, its dom property can be passed to /saved/:index to be rendered, then captured 
+    res.status(204).send();
+});
+
+//POST: Download
+app.post('/appstractor/saved_canvas/:index/download', (req, res) => {
     capture({
-        url: `http://localhost:3000/appstractor/saved_canvas/${data.length - 1}`,
+        url: `http://localhost:3000/appstractor/saved_canvas/${req.params.index}`,
         width: 3600,
         height: 2400,
         }).then(screenshot => {
-        fs.writeFileSync(`${__dirname}/public/saved/appstractor${data.length - 1}.png`, screenshot)
-        console.log('image saved')
+        fs.writeFileSync(`${__dirname}/public/saved/appstractor.png`, screenshot);
+        console.log('image saved');
     });
     res.status(204).send();
 });
 
 //Delete
-app.delete('/appstractor/saved_canvas/:id', (req, res) => {
-    data.splice(req.body.index, 1);
+app.delete('/appstractor/saved_canvas/:index', (req, res) => {
+    data.splice(req.params.index, 1);
     res.status(204).send();
 });
 
+//Mongoose
+// mongoose.connect(mongoURI);
+
 //Listen
 app.listen(port, (req,res) => console.log('listening'));
+
