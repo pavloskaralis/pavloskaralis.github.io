@@ -43,11 +43,16 @@
             <div class="button" id="download">
                 <img src="/../images/download.png" class="button-image">
                 <div class="button-text"> Download </div>
-            </div>      
-            <div class="button" id="delete">
-                <img src="/../images/delete.png" class="button-image">
-                <div class="button-text"> Delete </div>
-            </div>   
+            </div>  
+            <!-- action route reassigned via jQuery within page script -->
+            <form action="/appstractor/saved_canvas/0/?_method=DELETE" method="POST" class="button-form">
+                <!-- value assigned via jQuery within page script -->
+                <input type="text" name="index" class="input-hide">
+                <button type="submit" class="button" id="delete">
+                    <img src="/../images/delete.png" class="button-image">
+                    <div class="button-text"> Delete </div>
+                </button>
+            </form>   
         </div>
     </div>
     <!-- absolute bg image -->
@@ -57,6 +62,7 @@
         class Gallery {
             constructor() {
                 this.currentIndex = 0
+                //transfers data to script
                 this.dataLength = $('#length').text();
             }
             initialize = () => {
@@ -64,12 +70,16 @@
                 this.removeDataDiv();
                 this.toggleArrows();
             }
+            //removes invisible div that transfers data to script
             removeDataDiv = () => {
                 $('#length').remove();
             }
+            //prevents gallery from surpassing data length
             toggleArrows = () => {
+                //no left arrow past index 0
                 this.currentIndex === 0 ? 
                     $('#left-arrow').css('display','none') : $('#left-arrow').css('display','');
+                //no right arrow past last index
                 (this.currentIndex === this.dataLength - 1) || (this.dataLength < 1) ? 
                     $('#right-arrow').css('display','none') : $('#right-arrow').css('display','');
             }
@@ -83,8 +93,9 @@
                 }, 250);
             }
             //prevents blank container on load in
-            toggleIframes = () => {
-                const $iframe = $('<iframe>').attr('src',`/appstractor/saved_canvas/${this.currentIndex}`);
+            toggleIframes = (num) => {
+                num = num || 0; 
+                const $iframe = $('<iframe>').attr('src',`/appstractor/saved_canvas/${this.currentIndex - num}`);
                 $iframe.insertAfter($('iframe'));
                 //prevents fast clicking for causing population error
                 setTimeout(()=> {
@@ -111,23 +122,35 @@
                 $(link).attr('href', 'data:' + 'text/plain' + ';charset=utf-8,' + encodeURIComponent(html));
                 link.click();  
             }
+            //syncs delete form with current iframe index
+            updateFormAction () {
+                $('form').attr('action',`/appstractor/saved_canvas/${this.currentIndex}/?_method=DELETE`)
+            }
+            updateGallery () {
+                this.updateFormAction(); 
+                this.lockArrows(); 
+                this.toggleIframes();
+                this.toggleArrows();
+            }
             addEventListeners () {
                 $('#left-arrow').on('click', () => {
                     this.currentIndex -= 1;
-                    this.lockArrows(); 
-                    this.toggleIframes();
-                    this.toggleArrows();
+                    this.updateGallery(); 
                 });
                 $('#right-arrow').on('click', () => {
                     this.currentIndex += 1;
-                    this.lockArrows(); 
-                    this.toggleIframes();
-                    this.toggleArrows();
+                    this.updateGallery();
                 });
                 $('#download').on('click', () => {
                     this.downloadPNG();
                     this.downloadHTML(); 
                 });
+                $('#delete').on('click', () => {
+                    $('input').val(this.currentIndex);
+                    this.dataLength > 0 ? this.dataLength -= 1 : null;
+                    this.currentIndex === this.dataLength ? this.currentIndex -= 1 : null; 
+                    this.updateGallery();                    
+                }); 
             }
         }
        const gallery = new Gallery;

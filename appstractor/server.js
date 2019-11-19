@@ -43,6 +43,7 @@ app.get('/appstractor/saved_canvas/:index', (req,res) => {
 //PUT
 app.put('/appstractor/render/new', (req, res) => {
     //creates document
+    //no need to - 1 since data not yet pushed
     const document = {
         index: data.length,
         dom: req.body.dom,
@@ -58,6 +59,12 @@ app.put('/appstractor/render/new', (req, res) => {
         fs.writeFileSync(`${__dirname}/public/saved/appstractor${data.length - 1}.png`, screenshot)
         console.log('image saved')
     });
+    res.status(204).send();
+});
+
+//Delete
+app.delete('/appstractor/saved_canvas/:id', (req, res) => {
+    data.splice(req.body.index, 1);
     res.status(204).send();
 });
 

@@ -161,13 +161,14 @@
                 },2000);
         }
 
+        //easier to access parent nodes from iframe, than iframe script from parent window
         addEventListeners () {
+            $('#upload',parent.document).on('click', () => {
+           
+            });
             $('#render',parent.document).on('click', (event) => {
                 image.renderAppstraction();
                 this.disableButtons();
-            });
-            $('#resize',parent.document).on('click', () => {
-                image.toggleSize();
             });
             $('#detail',parent.document).on('click', () => {
                 image.toggleDetail();
@@ -178,9 +179,7 @@
             $('#save',parent.document).on('click', () => {
                 $('input',parent.document).val($('body').html());
                 this.disableButtons();
-            });
-            $('#upload',parent.document).on('click', () => {
-            });
+            }); 
         }
     }
     const image = new Canvas;
