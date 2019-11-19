@@ -46,10 +46,13 @@ app.get('/appstractor/saved_canvas/:index', (req,res) => {
 }); 
 
 //POST: Save
-app.post('/appstractor/blank_canvas/save', (req, res) => {
+app.post('/appstractor/blank_canvas', (req, res) => {
     //creates document
     const document = {
+        //replaced by mongo id assignment
         id: Math.round(Math.random() * 1000000), 
+        //to be further implemented with user accounts
+        user: 'username',
         dom: req.body.dom,
     }
     data.push(document);
@@ -57,7 +60,7 @@ app.post('/appstractor/blank_canvas/save', (req, res) => {
 });
 
 //POST: Download
-app.post('/appstractor/saved_canvas/:index/download', (req, res) => {
+app.post('/appstractor/saved_canvas/:index', (req, res) => {
     capture({
         url: `http://localhost:3000/appstractor/saved_canvas/${req.params.index}`,
         width: 3600,

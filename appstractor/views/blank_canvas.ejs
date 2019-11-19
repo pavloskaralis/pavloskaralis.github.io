@@ -176,6 +176,7 @@
             $('#shadow',parent.document).on('click', () => {
                 image.toggleShadow();
             });
+            //passes iframe body html to POST/save route 
             $('#save',parent.document).on('click', () => {
                 $('input',parent.document).val($('body').html());
                 this.disableButtons(500);

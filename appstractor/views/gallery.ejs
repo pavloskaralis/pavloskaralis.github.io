@@ -12,6 +12,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
 </head>
+<!-- since iframe and not parent window refreshes, script params needed to keep track of data -->
 <div id="length" style="display: none">
     <%= data.length %>
 </div>
@@ -50,7 +51,7 @@
                     <div class="button-text"> Edit </div>
             </div>
             <!-- action route reassigned via jQuery within page script -->
-            <form action="/appstractor/saved_canvas/0/download" method="POST" class="button-form" id="download-form">
+            <form action="/appstractor/saved_canvas/0" method="POST" class="button-form" id="download-form">
                 <button type="submit" class="button center" id="download">
                     <img src="/../images/download.png" class="button-image">
                     <div class="button-text"> Download </div>
@@ -72,7 +73,7 @@
         class Gallery {
             constructor() {
                 this.currentIndex = 0
-                //transfers data to script
+                // script stores data 
                 this.dataLength = $('#length').text();
                 this.docIDs = $('#docIDs').text().split(',');
             }
@@ -102,6 +103,7 @@
                 //also submits current index to download route
                 $('#download').on('click', () => {
                     this.disableButtons(6000);
+                    //delayed to allow time for page to be captured as png before download
                     setTimeout( () => { 
                         this.downloadPNG();
                         this.downloadHTML(); 
@@ -109,17 +111,20 @@
                 });
                 //also submits current index to delete route
                 $('#delete').on('click', () => {
-                    //prevents spamming of delete button and accidental deletes
-                    this.disableButtons(500);
-                    //reduces data length on deletion 
-                    this.dataLength > 0 ? this.dataLength -= 1 : null;
-                    //removes current index's id from docIDs array to sync with data length
-                    this.dataLength > 0 ? this.docIDs.splice(this.currentIndex, 1) : null;
-                    //if last image deleted, renders previous; otherwise, renders proceeding
-                    (this.currentIndex === this.dataLength) && (this.dataLength > 0)? 
-                        this.currentIndex -= 1 : null; 
-                    //forces update to wait until properties are updated to prevent incorrect render
-                    setTimeout(()=> this.updateGallery(), 0); 
+                    //ensures delete route always occurs before updating properties, even though its already js default
+                    setTimeout(() => { 
+                        //prevents spamming of delete button and accidental deletes
+                        this.disableButtons(500);
+                        //reduces data length on deletion 
+                        this.dataLength > 0 ? this.dataLength -= 1 : null;
+                        //removes current index's id from docIDs array to sync with data length
+                        this.dataLength > 0 ? this.docIDs.splice(this.currentIndex, 1) : null;
+                        //if last image deleted, renders previous; otherwise, renders proceeding
+                        (this.currentIndex === this.dataLength) && (this.dataLength > 0)? 
+                            this.currentIndex -= 1 : null; 
+                        //forces update to wait until properties are updated to prevent incorrect render
+                        setTimeout(()=> this.updateGallery(), 0); 
+                    }, 0);
                 }); 
             }
 
@@ -132,7 +137,7 @@
             }
             //syncs forms with current iframe index
             updateFormActions () {
-                $('#download-form').attr('action',`/appstractor/saved_canvas/${this.currentIndex}/download`);
+                $('#download-form').attr('action',`/appstractor/saved_canvas/${this.currentIndex}`);
                 $('#delete-form').attr('action',`/appstractor/saved_canvas/${this.currentIndex}/?_method=DELETE`);
             }
             //prevents fast clicking
@@ -180,6 +185,7 @@
 
             //image download function
             downloadPNG = () => {
+                //jQuery does not work
                 const link = document.createElement('a');
                 $(link).attr('download', `appstractor${this.docIDs[this.currentIndex]}.png`);
                 $(link).attr('href', `/./saved/appstractor.png`);
@@ -187,6 +193,7 @@
             }
             //html download function 
             downloadHTML = () => {
+                //jQuery does not work
                 const link = document.createElement('a');
                 const html = $('iframe').contents().find('html').html();
                 $(link).attr('download', `appstractor${this.docIDs[this.currentIndex]}.html`);

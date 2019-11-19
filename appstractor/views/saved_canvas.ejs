@@ -44,21 +44,16 @@
 <body id="old" style="display: none">
     <!-- necessary to pass data to script -->
     <div id="dom">
+        <!-- conditional prevents non-disruptive error -->
         <% if (data.length > 0) { %>
             <%= doc.dom %>
         <% } %>
-    </div>
-    <div id="id">
-            <% if (data.length > 0) { %>
-                <%= doc.dom %>
-            <% } %>
     </div>
     <script>
         //too short to use class
         const renderSaved = () => {
             //create a new body; jQuery causes non-disruptive error
             const parse = document.createElement('body');
-            $(parse).attr('id','new');
             //set new body's html via .text() to parse data string 
             $(parse).html($('#dom').text());
             //remove <script> from new body 
