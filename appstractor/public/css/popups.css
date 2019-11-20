@@ -32,6 +32,8 @@
 }
 
 #search-input, #upload-input {
+    position: absolute;
+    text-align: center;
     align-self: center;
     background-color: white; 
     box-sizing: border-box;
