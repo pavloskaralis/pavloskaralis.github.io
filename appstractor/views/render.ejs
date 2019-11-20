@@ -7,6 +7,7 @@
     <title>Appstractor Interface</title>
     <link rel="stylesheet" href="/../css/main.css">
     <link rel="stylesheet" href="/../css/iframe.css">
+    <link rel="stylesheet" href="/../css/popups.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 </head>
 <body>
@@ -32,31 +33,45 @@
             <div class="button" id="upload">
                 <img src="/../images/upload.png" class="button-image">  
                 <div class="button-text"> Upload </div>            </div>   
-            <div class="button">
+            <div class="button" id="search">
                 <img src="/../images/search.png" class="button-image">
                 <div class="button-text"> Search </div>            </div>   
-            <div class="button" id="render">
+            <div class="button" id="render" style='opacity: .5; pointer-events: none'>
                 <img src="/../images/render.png" class="button-image">
                 <div class="button-text"> Render </div>
             </div>      
-            <div class="button" id="detail">
+            <div class="button" id="detail" style='opacity: .5; pointer-events: none'>
                 <img src="/../images/detail.png" class="button-image"> 
                 <div class="button-text"> Detail </div>
             </div>   
-            <div class="button" id="shadow">
+            <div class="button" id="shadow" style='opacity: .5; pointer-events: none'>
                 <img src="/../images/shadow.png" class="button-image">
                 <div class="button-text"> Shadow </div>
             </div>  
             <form action="/appstractor/blank_canvas" method="POST" class="button-form">
                 <!-- value assigned via jQuery within iframe script -->
-                <input type="text" name="dom" class="input-hide">
-                <button type="submit" class="button" id="save">
+                <input type="text" name="dom" class="input-hide" id="save-input">
+                <button type="submit" class="button" id="save" style='opacity: .5; pointer-events: none'>
                     <img src="/../images/save.png" class="button-image">
                     <div class="button-text"> Save </div>
                 </button>
             </form>
         </div>
     </div>
+    <!-- pop up navigation -->
+    <div class="buttons-container" id="search-panel">
+        <div class="buttons">
+            <div class="button" id="back">
+                <img src="/../images/back.png" class="button-image"> 
+                <div class="button-text"> Back </div>
+            </div> 
+            <input type="text"  placeholder="Search" id="search-input">
+            <button type="submit" class="button" id="submit-search">
+                <img src="/../images/submit.png" class="button-image">
+                <div class="button-text"> Submit </div>
+            </button>
+        </div>
+    </div>  
     <!-- absolute bg image -->
     <div class="overlay-color"></div>
     <div class="overlay-image"></div>

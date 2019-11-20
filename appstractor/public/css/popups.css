@@ -1,4 +1,4 @@
-#edit-panel{
+#edit-panel, #search-panel, #upload-panel{
     display: none;
 }
 
@@ -31,7 +31,30 @@
     animation-timing-function: linear;
 }
 
+#search-input, #upload-input {
+    align-self: center;
+    background-color: white; 
+    box-sizing: border-box;
+    left: calc(50% - 80px);
+    width: 160px; 
+    height: 30px; 
+}
+
 @keyframes load {
     0%{width: 0%;}
     100%{width: 100%;}
+}
+
+@media (min-width: 768px) {
+    #search-input, #upload-input {
+        left: calc(50% - 120px);
+        width: 240px; 
+    }
+}
+
+@media (min-width: 992px) { 
+    #search-input, #upload-input {
+        left: calc(50% - 180px);
+        width: 360px; 
+    }
 }
