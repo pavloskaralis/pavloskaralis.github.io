@@ -50,6 +50,7 @@
         editAppstraction () {
             //remove animation for toggle buttons
             $('.cell').css('transition','');
+            $('.background-canvas').removeClass('show');
             //applies effects without regenerating to keep same pattern 
             $('.cell').css('box-shadow', this.currentDepth);
             $('.cell').css('background-size',`${this.currentFocus[1]}%`);

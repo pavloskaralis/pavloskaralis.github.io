@@ -19,6 +19,9 @@ app.use(methodOverride('_method'));
 app.use(express.urlencoded({limit: '50mb', extended: true}));
 app.use(express.json({limit: '50mb', extended: true}));
 
+app.get('/test', (req,res) => {
+    res.render('test.ejs');
+});
 //GET
 //Index
 app.get('/appstractor', (req,res) => {
@@ -69,6 +72,12 @@ app.post('/appstractor/saved_canvas/:index', (req, res) => {
         fs.writeFileSync(`${__dirname}/public/saved/appstractor.png`, screenshot);
         console.log('image saved');
     });
+    res.status(204).send();
+});
+
+//PUT
+app.put('/appstractor/saved_canvas/:index', (req,res) => {
+    data[req.params.index].dom = req.body.dom;
     res.status(204).send();
 });
 
