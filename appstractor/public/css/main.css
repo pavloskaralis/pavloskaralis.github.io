@@ -180,7 +180,7 @@ body {
     display: none;
 }
 
-/* issue with text length in button type submit  */
+/* issue with text length of 'download' in button type submit  */
 .center {
     padding-left: 11.5px; 
 }

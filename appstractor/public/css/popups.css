@@ -1,3 +1,37 @@
 #edit-panel{
     display: none;
 }
+
+#load-bar-container {
+    display: none;
+    position: absolute;
+    height: 5%;
+    width: 50%;
+    top: 48.5%; 
+    left:  25%;
+    z-index: 1;
+    background:rgba(5,10,15);
+    border: 4px double white; 
+}
+
+#load-bar{
+    pointer-events: none;
+    width: 0%;
+    height: 100%;
+    background-image: linear-gradient(
+        to right, 
+        rgb(255, 230, 0) 30%, 
+        rgb(255, 105, 170) 70%)
+    ;
+}
+
+.load {
+    animation-name: load;
+    animation-duration: 6s;
+    animation-timing-function: linear;
+}
+
+@keyframes load {
+    0%{width: 0%;}
+    100%{width: 100%;}
+}
