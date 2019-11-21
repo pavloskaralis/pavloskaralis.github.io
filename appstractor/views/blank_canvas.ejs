@@ -9,6 +9,9 @@
     <title>Appstractor Blank Canvas</title>
 </head>
 <body>
+    <div id="user" style="display: none">
+            <%= user %>
+    </div>
     <script>
     class Canvas {
         constructor () {
@@ -25,11 +28,16 @@
             this.url = null;
             this.currentFocus = this.detailed;
             this.currentDepth = this.flat;
+            //prevents shadow and detail rendering of non rendered images
             this.generated = false; 
+            //tracks user account
+            this.user = $('#user').text();
             //keeps track of whether user clicks link or search to share pop up nav
             this.source = null; 
         }
         initialize() {
+            //remove invisible div
+            $('#user').remove();
             this.addEventListeners();
         }
         renderAppstraction () {
@@ -208,7 +216,8 @@
             });
             //passes iframe body html to POST/save route 
             $('#save',parent.document).on('click', () => {
-                $('#save-input',parent.document).val($('body').html());
+                $('#user-input',parent.document).val(this.user);
+                $('#dom-input',parent.document).val($('body').html());
                 this.disableButtons(500);
             }); 
             $('#back',parent.document).on('click', () => {

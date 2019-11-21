@@ -2,6 +2,7 @@ const express = require('express');
 const app = express();
 const port = 3000;
 const methodOverride = require('method-override');
+const user = {username: 'Username', email: 'first.last@gmail.com', password: '12345'}
 const data = [];
 const capture = require('capture-chrome');
 const fs = require('fs');
@@ -32,11 +33,12 @@ app.get('/appstractor/render', (req,res) => {
 
 //Iframe within Create
 app.get('/appstractor/blank_canvas', (req,res) => {
-    res.render('blank_canvas.ejs');
+    res.render('blank_canvas.ejs',  {user: user.username});
 });
 
 //Show + Edit 
 app.get('/appstractor/gallery', (req,res) => {
+    data.forEach(doc => console.log(doc.user))
     res.render('gallery.ejs',{data: data});  
 });
 
@@ -53,7 +55,7 @@ app.post('/appstractor/blank_canvas', (req, res) => {
         //replaced by mongo id assignment
         id: Math.round(Math.random() * 1000000), 
         //to be further implemented with user accounts
-        user: 'username',
+        user: req.body.user,
         dom: req.body.dom,
     }
     data.push(document);
