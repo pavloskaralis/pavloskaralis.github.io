@@ -1,4 +1,4 @@
-#edit-panel, #search-panel, #upload-panel{
+#edit-panel, #popup-panel {
     display: none;
 }
 
@@ -31,7 +31,7 @@
     animation-timing-function: linear;
 }
 
-#search-input, #upload-input {
+#popup-input {
     position: absolute;
     text-align: center;
     align-self: center;
@@ -48,14 +48,14 @@
 }
 
 @media (min-width: 768px) {
-    #search-input, #upload-input {
+    #popup-input {
         left: calc(50% - 120px);
         width: 240px; 
     }
 }
 
 @media (min-width: 992px) { 
-    #search-input, #upload-input {
+    #popup-input {
         left: calc(50% - 180px);
         width: 360px; 
     }

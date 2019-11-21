@@ -19,9 +19,6 @@ app.use(methodOverride('_method'));
 app.use(express.urlencoded({limit: '50mb', extended: true}));
 app.use(express.json({limit: '50mb', extended: true}));
 
-app.get('/test', (req,res) => {
-    res.render('test.ejs');
-});
 //GET
 //Index
 app.get('/appstractor', (req,res) => {
@@ -38,15 +35,16 @@ app.get('/appstractor/blank_canvas', (req,res) => {
     res.render('blank_canvas.ejs');
 });
 
-//Show
+//Show + Edit 
 app.get('/appstractor/gallery', (req,res) => {
     res.render('gallery.ejs',{data: data});  
 });
 
-//Iframe within Show
+//Iframe within Show + Edit
 app.get('/appstractor/saved_canvas/:index', (req,res) => {
     res.render('saved_canvas.ejs',{data: data, doc: data[req.params.index]});
 }); 
+
 
 //POST: Save
 app.post('/appstractor/blank_canvas', (req, res) => {

@@ -17,7 +17,7 @@
             this.mediumBot = [0,5,225,5,'flex-start','bottom',100,6.25,6.8,19];
             //focus parameters
             this.simplified = [10000,200000];
-            this.detailed = [100,2000];
+            this.detailed = ['cover',2000];
             //depth parameters
             this.flat = '';
             this.shadow = '-2.5px 5px 25px 0px rgba(0,0,0,.6)';
@@ -26,6 +26,8 @@
             this.currentFocus = this.detailed;
             this.currentDepth = this.flat;
             this.generated = false; 
+            //keeps track of whether user clicks link or search to share pop up nav
+            this.source = null; 
         }
         initialize() {
             this.addEventListeners();
@@ -41,7 +43,7 @@
             $('.background-canvas').eq(0).css('background-image',`url(${this.url})`);
             //renders focus
             $('.cell').css('background-image',`url(${this.url})`);
-            $('.background-canvas').eq(0).css('background-size',`${this.currentFocus[0]}% ${this.currentFocus[0]}%`);
+            $('.background-canvas').eq(0).css('background-size',`${this.currentFocus[0]}%`);
             $('.cell').css('background-size',`${this.currentFocus[1]}%`);
             //renders depth
             $('.cell').css('box-shadow', this.currentDepth);
@@ -56,7 +58,7 @@
             //applies effects without regenerating to keep same pattern 
             $('.cell').css('box-shadow', this.currentDepth);
             $('.cell').css('background-size',`${this.currentFocus[1]}%`);
-            $('.background-canvas').css('background-size',`${this.currentFocus[0]}% ${this.currentFocus[0]}%`);
+            $('.background-canvas').css('background-size',`${this.currentFocus[0]}%`);
         }
 
         toggleImage (url) {
@@ -66,7 +68,7 @@
             this.url = url;
             //disables auto rendering for toggle buttons
             this.generated = false; 
-            //renders uploaded or searched image without effects
+            //renders linked or searched image without effects
             const $backgroundCanvas = $('<div>').addClass('background-canvas')
             const $bottomCanvas = $('<div>').addClass('bottom-canvas');
             const $topCanvas = $('<div>').addClass('top-canvas');
@@ -158,7 +160,7 @@
             $('.bottom-canvas').eq(0).css('z-index','1');
             $('.top-canvas').eq(0).css('z-index','2');
         }
-        // does not apply to upload and search
+        // does not apply to link and search
         activateButtons(){
             $('#render',parent.document).css('opacity','1').css('pointer-events','auto');
             $('#detail',parent.document).css('opacity','1').css('pointer-events','auto');
@@ -172,10 +174,27 @@
                     $('.button',parent.document).css('opacity','1').css('pointer-events','auto');
                 },num);
         }
+        apiQuery () {
+            const app_id = '4229c9ccce8609e45051cea4103298e9a0bc85c2173c8c719dfde18bf2ea0ee2'
+            const query = $('#popup-input',parent.document).val();
+            const url = 'https://api.unsplash.com/search/photos?client_id='+app_id+'&page=1&orientation=landscape&query='+ query;    
+            $.ajax({
+                url: url,
+                dataType: 'json',
+                success: (json) => this.toggleImage(json.results[Math.floor(Math.random() * 10)]['urls']['regular'])
+            });
+        }
         //easier to access parent nodes from iframe, than iframe script from parent window
         addEventListeners () {
+            $('#link',parent.document).on('click', () => {
+                this.source = 'link';
+                $('#popup-input',parent.document).val('').attr('placeholder','Paste Link/Enter or Submit');
+                $('#popup-panel',parent.document).css('display','inherit');
+            });
             $('#search',parent.document).on('click', () => {
-                $('#search-panel',parent.document).css('display','inherit');
+                this.source = 'search';
+                $('#popup-input',parent.document).val('').attr('placeholder','Type Search/Enter or Submit');
+                $('#popup-panel',parent.document).css('display','inherit');
             });
             $('#render',parent.document).on('click', (event) => {
                 image.renderAppstraction();
@@ -193,17 +212,11 @@
                 this.disableButtons(500);
             }); 
             $('#back',parent.document).on('click', () => {
-                $('#search-panel',parent.document).css('display','none');
+                $('#popup-panel',parent.document).css('display','none');
             });
             $('#submit-search',parent.document).on('click', () => {
-                const app_id = '4229c9ccce8609e45051cea4103298e9a0bc85c2173c8c719dfde18bf2ea0ee2'
-                const query = $('#search-input',parent.document).val();
-                const url = 'https://api.unsplash.com/search/photos?client_id='+app_id+'&page=1&query='+ query;    
-                $.ajax({
-                    url: url,
-                    dataType: 'json',
-                    success: (json) => this.toggleImage(json.results[Math.floor(Math.random() * 10)]['urls']['regular'])
-                });
+                //same pop up used for both link and search; different outcome depending on which button is clicked
+                this.source === 'link' ? this.toggleImage($('#popup-input',parent.document).val()) : this.apiQuery();
                 return false;
             });   
         }

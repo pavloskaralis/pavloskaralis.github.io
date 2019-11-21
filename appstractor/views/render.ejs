@@ -30,12 +30,14 @@
     <!-- fixed navigation -->
     <div class="buttons-container">
         <div class="buttons">
-            <div class="button" id="upload">
-                <img src="/../images/upload.png" class="button-image">  
-                <div class="button-text"> Upload </div>            </div>   
+            <div class="button" id="link">
+                <img src="/../images/link.png" class="button-image">
+                <div class="button-text"> Link </div>            
+            </div>   
             <div class="button" id="search">
                 <img src="/../images/search.png" class="button-image">
-                <div class="button-text"> Search </div>            </div>   
+                <div class="button-text"> Search </div>            
+            </div>   
             <div class="button" id="render" style='opacity: .5; pointer-events: none'>
                 <img src="/../images/render.png" class="button-image">
                 <div class="button-text"> Render </div>
@@ -59,15 +61,15 @@
         </div>
     </div>
     <!-- pop up navigation -->
-    <div class="buttons-container" id="search-panel">
+    <div class="buttons-container" id="popup-panel">
         <div class="buttons">
             <div class="button" id="back">
                 <img src="/../images/back.png" class="button-image"> 
                 <div class="button-text"> Back </div>
             </div> 
             <div class="filler" style="width:105px"></div>
-            <form class="button-form">
-                <input type="text"  placeholder="Search" id="search-input">
+            <form class="button-form" id="popup-form">
+                <input type="text" id="popup-input">
                 <button type="submit" class="button" id="submit-search">
                     <img src="/../images/submit.png" class="button-image">
                     <div class="button-text"> Submit </div>

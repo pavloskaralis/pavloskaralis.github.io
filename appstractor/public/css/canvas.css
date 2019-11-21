@@ -23,7 +23,7 @@ html, body, .top-canvas, .bottom-canvas, .background-canvas {
 .background-canvas {
     z-index: 3; 
     background-position: center;
-    background-size: 100% 100%; 
+    background-size: cover; 
 }
 
 .show {

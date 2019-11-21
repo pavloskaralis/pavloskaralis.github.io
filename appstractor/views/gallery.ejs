@@ -164,8 +164,8 @@
                 $('#right-arrow').css('pointer-events','none');
                 $('.button').css('opacity','.5').css('pointer-events','none');
                 setTimeout( () => {
-                    $('#left-arrow').css('pointer-events','auto');
-                    $('#right-arrow').css('pointer-events','auto');
+                    $('#left-arrow').css('pointer-events','auto').css('opacity','1');
+                    $('#right-arrow').css('pointer-events','auto').css('opacity','1');
                     //buttons remain disabled when gallery fully empties
                     this.dataLength > 0 ? 
                         $('.button').css('opacity','1').css('pointer-events','auto') : null; 
@@ -206,36 +206,43 @@
                     this.updateGallery();
                 });
                 $('#edit').on('click', () => {
+                    //disable arrows
+                    $('#left-arrow').css('pointer-events','none').css('opacity','0');
+                    $('#right-arrow').css('pointer-events','none').css('opacity','0');
                     //toggle conditional
                     $('#edit-panel').css('display') === 'none' ?
                         $('#edit-panel').css('display','inherit') : $('#edit-panel').css('display','none');
                 });
                 //also submits current index to download route
                 $('#download').on('click', () => {
+                    // alert(this.currentIndex);
                     this.loadingBar();
                     this.disableButtons(6000);
+                    //also hide arrows
+                    $('#left-arrow').css('opacity','0');
+                    $('#right-arrow').css('opacity','0');
                     //delayed to allow time for page to be captured as png before download
                     setTimeout( () => { 
                         this.downloadPNG();
                         this.downloadHTML(); 
+                        //show arrows
+                        $('#left-arrow').css('opacity','1');
+                        $('#right-arrow').css('opacity','1');
                     },6000);
                 });
                 //also submits current index to delete route
                 $('#delete').on('click', () => {
-                    //ensures delete route always occurs before updating properties, even though its already js default
-                    setTimeout(() => { 
-                        //prevents spamming of delete button and accidental deletes
-                        this.disableButtons(500);
-                        //reduces data length on deletion 
-                        this.dataLength > 0 ? this.dataLength -= 1 : null;
-                        //removes current index's id from docIDs array to sync with data length
-                        this.dataLength > 0 ? this.docIDs.splice(this.currentIndex, 1) : null;
-                        //if last image deleted, renders previous; otherwise, renders proceeding
-                        (this.currentIndex === this.dataLength) && (this.dataLength > 0)? 
-                            this.currentIndex -= 1 : null; 
-                        //forces update to wait until properties are updated to prevent incorrect render
-                        setTimeout(()=> this.updateGallery(), 0); 
-                    }, 0);
+                    //prevents spamming of delete button and accidental deletes
+                    this.disableButtons(500);
+                    //reduces data length on deletion 
+                    this.dataLength > 0 ? this.dataLength -= 1 : null;
+                    //removes current index's id from docIDs array to sync with data length
+                    this.dataLength > 0 ? this.docIDs.splice(this.currentIndex, 1) : null;
+                    //if last image deleted, renders previous; otherwise, renders proceeding
+                    (this.currentIndex === this.dataLength) && (this.dataLength > 0)? 
+                        this.currentIndex -= 1 : null; 
+                    //forces update to wait until properties are updated to prevent incorrect render
+                    setTimeout(()=> this.updateGallery(), 0); 
                 }); 
                 $('#detail',parent.document).on('click', () => {
                     const $iframe = $('iframe').contents();
@@ -245,8 +252,8 @@
                     //toggle conditionals
                     $iframe.find('.cell').css('background-size') === '2000%' ?
                         $iframe.find('.cell').css('background-size','200000%') : $iframe.find('.cell').css('background-size','2000%');
-                    $iframe.find('.background-canvas').css('background-size') === '100% 100%' ?
-                        $iframe.find('.background-canvas').css('background-size','10000% 10000%') : $iframe.find('.background-canvas').css('background-size','100% 100%');
+                    $iframe.find('.background-canvas').css('background-size') === 'cover' ?
+                        $iframe.find('.background-canvas').css('background-size','10000%') : $iframe.find('.background-canvas').css('background-size','cover');
                 });
                 $('#shadow',parent.document).on('click', () => {
                     const $iframe = $('iframe').contents();
