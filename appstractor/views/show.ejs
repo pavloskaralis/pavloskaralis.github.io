@@ -188,7 +188,7 @@
                 setTimeout( ()=> {
                     $('#load-bar-container').css('display','none');
                     $('#load-bar').removeClass('load');
-                }, 6000);
+                }, 7000);
             }
             //image download function
             downloadPNG = () => {
@@ -228,7 +228,7 @@
                 $('#download').on('click', () => {
                     // alert(this.currentIndex);
                     this.loadingBar();
-                    this.disableButtons(6000);
+                    this.disableButtons(7000);
                     //also hide arrows
                     $('#left-arrow').css('opacity','0');
                     $('#right-arrow').css('opacity','0');
@@ -239,7 +239,7 @@
                         //show arrows
                         $('#left-arrow').css('opacity','1');
                         $('#right-arrow').css('opacity','1');
-                    },7500);
+                    },7000);
                 });
                 //also submits current index to delete route
                 $('#delete').on('click', () => {

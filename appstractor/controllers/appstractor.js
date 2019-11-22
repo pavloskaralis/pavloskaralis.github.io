@@ -46,7 +46,6 @@ router.post('/blank_canvas', (req, res) => {
 });
 
 //POST: Download
-//Needs to be done with id and not index to avoid capture-chrome cache error 
 router.post('/saved_canvas/:id', (req, res) => {
         capture({
             url: `http://localhost:3000/appstractor/saved_canvas/${req.params.id}`,
@@ -54,6 +53,7 @@ router.post('/saved_canvas/:id', (req, res) => {
             height: 2400,
             }).then(screenshot => {
             fs.writeFileSync(`${__dirname + '/../'}/public/saved/appstractorUsername.png`, screenshot);
+            console.log('image saved');
         });
         res.status(204).send();
 });
