@@ -188,10 +188,10 @@
                 setTimeout( ()=> {
                     $('#load-bar-container').css('display','none');
                     $('#load-bar').removeClass('load');
-                }, 7000);
+                }, 7500);
             }
             //image download function
-            downloadPNG = () => {
+            downloadPNG () {
                 //jQuery does not work
                 const link = document.createElement('a');
                 $(link).attr('download', `appstractor${this.docIDs[this.currentIndex]}.png`);
@@ -199,7 +199,7 @@
                 link.click(); 
             }
             //html download function 
-            downloadHTML = () => {
+            downloadHTML () {
                 //jQuery does not work
                 const link = document.createElement('a');
                 const html = $('iframe').contents().find('html').html();
@@ -228,7 +228,7 @@
                 $('#download').on('click', () => {
                     // alert(this.currentIndex);
                     this.loadingBar();
-                    this.disableButtons(7000);
+                    this.disableButtons(7500);
                     //also hide arrows
                     $('#left-arrow').css('opacity','0');
                     $('#right-arrow').css('opacity','0');
@@ -239,7 +239,7 @@
                         //show arrows
                         $('#left-arrow').css('opacity','1');
                         $('#right-arrow').css('opacity','1');
-                    },7000);
+                    },7500);
                 });
                 //also submits current index to delete route
                 $('#delete').on('click', () => {
