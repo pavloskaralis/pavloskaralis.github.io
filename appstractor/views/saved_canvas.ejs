@@ -44,10 +44,7 @@
 <body id="old" style="display: none">
     <!-- necessary to pass data to script -->
     <div id="dom">
-        <!-- conditional prevents non-disruptive error -->
-        <% if (data.length > 0) { %>
-            <%= doc.dom %>
-        <% } %>
+        <%= doc.dom %>
     </div>
     <script>
         //too short to use class

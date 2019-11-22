@@ -23,12 +23,12 @@ app.use(express.json({limit: '50mb', extended: true}));
 //GET
 //Index
 app.get('/appstractor', (req,res) => {
-    res.render('home.ejs');
+    res.render('index.ejs');
 });
 
 //Create
 app.get('/appstractor/render', (req,res) => {
-    res.render('render.ejs');
+    res.render('new.ejs');
 });
 
 //Iframe within Create
@@ -40,14 +40,14 @@ app.get('/appstractor/blank_canvas', (req,res) => {
 //Show + Edit 
 app.get('/appstractor/gallery', (req,res) => {
     Appstraction.find({user: currentUser.username}, (err, data) => {
-        res.render('gallery.ejs',{data: data});
+        res.render('show.ejs',{data: data});
     });
 });
 
 //Iframe within Show + Edit
-app.get('/appstractor/saved_canvas/:index', (req,res) => {
-    Appstraction.find({user: currentUser.username}, (err, data) => {
-        res.render('saved_canvas.ejs',{data: data, doc: data[req.params.index]});
+app.get('/appstractor/saved_canvas/:id', (req,res) => {
+    Appstraction.findById(req.params.id, (err, doc) => {
+        res.render('saved_canvas.ejs',{doc: doc});
     });
 }); 
 
@@ -60,9 +60,10 @@ app.post('/appstractor/blank_canvas', (req, res) => {
 });
 
 //POST: Download
-app.post('/appstractor/saved_canvas/:index', (req, res) => {
+//Needs to be done with id and not index to avoid capture-chrome cache error 
+app.post('/appstractor/saved_canvas/:id', (req, res) => {
     capture({
-        url: `http://localhost:3000/appstractor/saved_canvas/${req.params.index}`,
+        url: `http://localhost:3000/appstractor/saved_canvas/${req.params.id}`,
         width: 3600,
         height: 2400,
         }).then(screenshot => {
@@ -75,7 +76,6 @@ app.post('/appstractor/saved_canvas/:index', (req, res) => {
 //PUT
 app.put('/appstractor/saved_canvas/:id', (req,res) => {
     Appstraction.findByIdAndUpdate(req.params.id,{$set: {dom: req.body.dom}}, {new: true}, (err, doc) => {
-        console.log(req.params.id)
         res.status(204).send();
     });
 });
@@ -83,7 +83,6 @@ app.put('/appstractor/saved_canvas/:id', (req,res) => {
 //Delete
 app.delete('/appstractor/saved_canvas/:id', (req, res) => {
     Appstraction.findByIdAndDelete(req.params.id, (err, doc) => {
-        console.log(doc)
         res.status(204).send();
     });
 });
