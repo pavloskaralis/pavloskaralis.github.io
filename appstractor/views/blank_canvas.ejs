@@ -227,7 +227,8 @@
             });
             $('#submit-search',parent.document).on('click', () => {
                 //same pop up used for both link and search; different outcome depending on which button is clicked
-                this.source === 'link' ? this.toggleImage($('#popup-input',parent.document).val()) : this.apiQuery();
+                this.source === 'search' ? this.apiQuery() : 
+                    $('#popup-input',parent.document).val().length > 0 ? this.toggleImage($('#popup-input',parent.document).val()) : null;
                 $('#popup-panel',parent.document).css('display','none');
                 return false;
             });   

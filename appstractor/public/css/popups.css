@@ -27,6 +27,7 @@
 
 .load {
     animation-name: load;
+    /* capture chrome interupts after 6 seconds */
     animation-duration: 6s;
     animation-timing-function: linear;
 }
@@ -40,6 +41,12 @@
     left: calc(50% - 80px);
     width: 160px; 
     height: 30px; 
+    border-radius: 5px;
+}
+
+#popup-input:focus {
+    border: rgb(255, 105, 170) 2px solid;
+    outline: none;
 }
 
 @keyframes load {

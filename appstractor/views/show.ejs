@@ -24,6 +24,9 @@
         docIDs.push(null) %>
     <%= docIDs %>
 </div>
+<div id="user" style="display: none">
+        <%= user %>
+</div>
 <body>
     <!-- fixed navigation-->
     <div class="nav-container">
@@ -40,8 +43,8 @@
         <div id="load-bar-container">
             <div id="load-bar"></div>
         </div>
-        <div id="left-arrow">< </div>
-        <div id="right-arrow">> </div>
+        <div id="left-arrow"> < </div>
+        <div id="right-arrow"> > </div>
         <iframe></iframe>
     </div>
     <div class="filler buttons-container"></div>
@@ -101,6 +104,8 @@
                 this.dataLength = $('#length').text();
                 // script tracks doc ids for unique file naming 
                 this.docIDs = $('#docIDs').text().split(',');
+                // tracks username to download correct file 
+                this.user = $('#user').text().replace(/\s/g, '');
             }
             initialize = () => {
                 //removes first and last element arrays which store isolated enter characters
@@ -154,7 +159,9 @@
             }
             //prevents blank container on load in
             toggleIframes = () => { 
-                const $iframe = $('<iframe>').attr('src',`/appstractor/saved_canvas/${this.docIDs[this.currentIndex]}`);
+                //conditional prevents non disruptive error 
+                const $iframe = this.dataLength > 0 ? 
+                    $('<iframe>').attr('src',`/appstractor/saved_canvas/${this.docIDs[this.currentIndex]}`) : $('<iframe>').attr('src','');
                 $iframe.insertAfter($('iframe'));
                 //prevents fast clicking from causing population error
                 setTimeout(()=> {
@@ -188,7 +195,7 @@
                 //jQuery does not work
                 const link = document.createElement('a');
                 $(link).attr('download', `appstractor${this.docIDs[this.currentIndex]}.png`);
-                $(link).attr('href', `/./saved/appstractor.png`);
+                $(link).attr('href', `/./saved/appstractor${this.user}.png`);
                 link.click(); 
             }
             //html download function 
@@ -232,7 +239,7 @@
                         //show arrows
                         $('#left-arrow').css('opacity','1');
                         $('#right-arrow').css('opacity','1');
-                    },6000);
+                    },7500);
                 });
                 //also submits current index to delete route
                 $('#delete').on('click', () => {
