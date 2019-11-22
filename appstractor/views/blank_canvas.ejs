@@ -198,11 +198,13 @@
                 this.source = 'link';
                 $('#popup-input',parent.document).val('').attr('placeholder','Paste Link/Enter or Submit');
                 $('#popup-panel',parent.document).css('display','inherit');
+                setTimeout( ()=> $('#popup-input',parent.document).focus(), 0);
             });
             $('#search',parent.document).on('click', () => {
                 this.source = 'search';
                 $('#popup-input',parent.document).val('').attr('placeholder','Type Search/Enter or Submit');
                 $('#popup-panel',parent.document).css('display','inherit');
+                setTimeout( ()=> $('#popup-input',parent.document).focus(), 0);
             });
             $('#render',parent.document).on('click', (event) => {
                 image.renderAppstraction();
