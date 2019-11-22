@@ -10,7 +10,7 @@ const mongoURI = 'mongodb://localhost:27017/' + 'appstraction';
 const Appstraction = require('./models/appstraction.js');
 
 //test variable 
-const user = {username: 'Username', email: 'first.last@gmail.com', password: '12345'}
+const currentUser = {username: 'Username', email: 'first.last@gmail.com', password: '12345'}
 // const data = [];
 
 app.use(express.static('public'));
@@ -34,19 +34,19 @@ app.get('/appstractor/render', (req,res) => {
 //Iframe within Create
 app.get('/appstractor/blank_canvas', (req,res) => {
     //server identifies current user to attach their username to their content
-    res.render('blank_canvas.ejs',  {user: user.username});
+    res.render('blank_canvas.ejs',  {user: currentUser.username});
 });
 
 //Show + Edit 
 app.get('/appstractor/gallery', (req,res) => {
-    Appstraction.find({user: user.username}, (err, data) => {
+    Appstraction.find({user: currentUser.username}, (err, data) => {
         res.render('gallery.ejs',{data: data});
     });
 });
 
 //Iframe within Show + Edit
 app.get('/appstractor/saved_canvas/:index', (req,res) => {
-    Appstraction.find({user: user.username}, (err, data) => {
+    Appstraction.find({user: currentUser.username}, (err, data) => {
         res.render('saved_canvas.ejs',{data: data, doc: data[req.params.index]});
     });
 }); 
@@ -73,15 +73,19 @@ app.post('/appstractor/saved_canvas/:index', (req, res) => {
 });
 
 //PUT
-app.put('/appstractor/saved_canvas/:index', (req,res) => {
-    data[req.params.index].dom = req.body.dom;
-    res.status(204).send();
+app.put('/appstractor/saved_canvas/:id', (req,res) => {
+    Appstraction.findByIdAndUpdate(req.params.id,{$set: {dom: req.body.dom}}, {new: true}, (err, doc) => {
+        console.log(req.params.id)
+        res.status(204).send();
+    });
 });
 
 //Delete
-app.delete('/appstractor/saved_canvas/:index', (req, res) => {
-    data.splice(req.params.index, 1);
-    res.status(204).send();
+app.delete('/appstractor/saved_canvas/:id', (req, res) => {
+    Appstraction.findByIdAndDelete(req.params.id, (err, doc) => {
+        console.log(doc)
+        res.status(204).send();
+    });
 });
 
 //Mongoose

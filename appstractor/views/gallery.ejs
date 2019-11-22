@@ -48,8 +48,8 @@
     <!-- fixed navigation -->
     <div class="buttons-container">
         <div class="buttons">
-            <!-- action route reassigned via jQuery within page script -->
-            <form action="/appstractor/saved_canvas/0/?_method=DELETE" method="POST" class="button-form" id="delete-form">
+            <!-- action route assigned and reassigned via jQuery within page script -->
+            <form method="POST" class="button-form" id="delete-form"> :
                 <button type="submit" class="button" id="delete">
                     <img src="/../images/delete.png" class="button-image">
                     <div class="button-text"> Delete </div>
@@ -79,8 +79,8 @@
                 <img src="/../images/shadow.png" class="button-image">
                 <div class="button-text"> Shadow </div>
             </div>  
-            <!-- action route reassigned via jQuery within page script -->
-            <form action='/appstractor/saved_canvas/0/?_method=PUT' method="POST" class="button-form" id='save-form'>
+            <!-- action route assigned and reassigned via jQuery within page script -->
+            <form method="POST" class="button-form" id='save-form'>
                 <!-- value assigned via jQuery within iframe script -->
                 <input type="text" name="dom" class="input-hide">
                 <button type="submit" class="button" id="save">
@@ -109,6 +109,7 @@
                 this.removeDataDivs();
                 //disables buttons on load in if gallery is empty
                 this.dataLength < 1 ? $('.button',parent.document).css('opacity','.5').css('pointer-events','none') : null;
+                this.updateFormActions(); 
                 this.toggleArrows();    
                 this.addEventListeners();
             }
@@ -127,8 +128,8 @@
             //syncs forms with current iframe index
             updateFormActions () {
                 $('#download-form').attr('action',`/appstractor/saved_canvas/${this.currentIndex}`);
-                $('#delete-form').attr('action',`/appstractor/saved_canvas/${this.currentIndex}/?_method=DELETE`);
-                $('#save-form').attr('action',`/appstractor/saved_canvas/${this.currentIndex}/?_method=PUT`);
+                $('#delete-form').attr('action',`/appstractor/saved_canvas/${this.docIDs[this.currentIndex]}/?_method=DELETE`);
+                $('#save-form').attr('action',`/appstractor/saved_canvas/${this.docIDs[this.currentIndex]}/?_method=PUT`);
             }
             //prevents fast clicking
             lockArrows = () => {
