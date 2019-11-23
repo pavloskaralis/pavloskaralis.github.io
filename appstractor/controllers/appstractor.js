@@ -14,8 +14,8 @@ const currentUser = {username: 'Username', email: 'first.last@gmail.com', passwo
         res.render('index.ejs');
     });
 
-    //New
-    router.get('/render', (req,res) => {
+    //New 
+    router.get('/new', (req,res) => {
         res.render('new.ejs');
     });
 
@@ -26,7 +26,7 @@ const currentUser = {username: 'Username', email: 'first.last@gmail.com', passwo
     });
 
     //Show + Edit 
-    router.get('/gallery', (req,res) => {
+    router.get('/show', (req,res) => {
         Appstraction.find({user: currentUser.username}, (err, data) => {
             //data passed for length and id tracking within script; username used to located correct png for download
             res.render('show.ejs',{data: data, user: currentUser.username});
@@ -43,14 +43,14 @@ const currentUser = {username: 'Username', email: 'first.last@gmail.com', passwo
     }); 
 
 //POST: 
-    // Creates doc
+    // Create Document
     router.post('/blank', (req, res) => {
         Appstraction.create(req.body, (err, doc) => {
             res.status(204).send();
         });
     });
 
-    // Creates png 
+    // Create PNG
     router.post('/saved/:id', (req, res) => {
             //capture chrome makes a get request to /saved/:id
             capture({
@@ -64,7 +64,7 @@ const currentUser = {username: 'Username', email: 'first.last@gmail.com', passwo
             res.status(204).send();
     });
 
-//PUT
+//PUT (Update)
     router.put('/saved/:id', (req,res) => {
         //$set since only dom property is passed through body
         Appstraction.findByIdAndUpdate(req.params.id,{$set: {dom: req.body.dom}}, {new: true}, (err, doc) => {
@@ -72,7 +72,7 @@ const currentUser = {username: 'Username', email: 'first.last@gmail.com', passwo
         });
     });
 
-//Delete
+//Delete (Destroy)
     router.delete('/saved/:id', (req, res) => {
         //while the above could have been done with /:index, delete route requires :id
         Appstraction.findByIdAndDelete(req.params.id, (err, doc) => {
