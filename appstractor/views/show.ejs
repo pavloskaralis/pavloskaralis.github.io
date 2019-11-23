@@ -261,8 +261,8 @@
                     $iframe.find('.cell').css('transition','');
                     $iframe.find('.background-canvas').removeClass('show');
                     //toggle conditionals
-                    $iframe.find('.cell').css('background-size') === '2000%' ?
-                        $iframe.find('.cell').css('background-size','200000%') : $iframe.find('.cell').css('background-size','2000%');
+                    $iframe.find('.cell').css('background-size') === '1600%' ?
+                        $iframe.find('.cell').css('background-size','200000%') : $iframe.find('.cell').css('background-size','1600%');
                     $iframe.find('.background-canvas').css('background-size') === 'cover' ?
                         $iframe.find('.background-canvas').css('background-size','10000%') : $iframe.find('.background-canvas').css('background-size','cover');
                 });
@@ -272,7 +272,7 @@
                     $iframe.find('.cell').css('transition','');
                     //toggle conditional
                     $iframe.find('.cell').css('box-shadow') === 'none' ?
-                        $iframe.find('.cell').css('box-shadow','-2.5px 5px 25px 0px rgba(0,0,0,.5)') : $iframe.find('.cell').css('box-shadow','none');
+                        $iframe.find('.cell').css('box-shadow','-2.5px 5px 25px 0px rgba(0,0,0,.55)') : $iframe.find('.cell').css('box-shadow','none');
                 });
                 //passes iframe body html to POST/save route 
                 $('#save',parent.document).on('click', () => {

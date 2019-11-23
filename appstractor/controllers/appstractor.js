@@ -52,6 +52,7 @@ const currentUser = {username: 'Username', email: 'first.last@gmail.com', passwo
 
     // Creates png 
     router.post('/saved/:id', (req, res) => {
+            //capture chrome makes a get request to /saved/:id
             capture({
                 url: `http://localhost:3000/appstractor/saved/${req.params.id}`,
                 width: 3600,
@@ -64,18 +65,20 @@ const currentUser = {username: 'Username', email: 'first.last@gmail.com', passwo
     });
 
 //PUT
-router.put('/saved/:id', (req,res) => {
-    Appstraction.findByIdAndUpdate(req.params.id,{$set: {dom: req.body.dom}}, {new: true}, (err, doc) => {
-        res.status(204).send();
+    router.put('/saved/:id', (req,res) => {
+        //$set since only dom property is passed through body
+        Appstraction.findByIdAndUpdate(req.params.id,{$set: {dom: req.body.dom}}, {new: true}, (err, doc) => {
+            res.status(204).send();
+        });
     });
-});
 
 //Delete
-router.delete('/saved/:id', (req, res) => {
-    Appstraction.findByIdAndDelete(req.params.id, (err, doc) => {
-        res.status(204).send();
+    router.delete('/saved/:id', (req, res) => {
+        //while the above could have been done with /:index, delete route requires :id
+        Appstraction.findByIdAndDelete(req.params.id, (err, doc) => {
+            res.status(204).send();
+        });
     });
-});
 
 module.exports = router; 
 

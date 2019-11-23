@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="stylesheet" href="/../css/canvas.css">
+    <link rel="stylesheet" href="/../css/appstraction.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <title>Appstractor Blank Canvas</title>
 </head>
@@ -20,10 +20,10 @@
             this.mediumBot = [0,5,225,5,'flex-start','bottom',100,6.25,6.8,19];
             //focus parameters
             this.simplified = ['10000%','200000%'];
-            this.detailed = ['cover','2000%'];
+            this.detailed = ['cover','1600%'];
             //depth parameters
             this.flat = '';
-            this.shadow = '-2.5px 5px 25px 0px rgba(0,0,0,.5)';
+            this.shadow = '-2.5px 5px 25px 0px rgba(0,0,0,.55)';
             //default settings
             this.url = null;
             this.currentFocus = this.detailed;
@@ -184,11 +184,14 @@
         }
         apiQuery () {
             const app_id = '4229c9ccce8609e45051cea4103298e9a0bc85c2173c8c719dfde18bf2ea0ee2'
-            const query = $('#popup-input',parent.document).val();
+            //set input value as query param 
+            const query = $('#shared-input',parent.document).val();
+            //specify search params 
             const url = 'https://api.unsplash.com/search/photos?client_id='+app_id+'&page=1&per_page=10&orientation=landscape&query='+ query;    
             $.ajax({
                 url: url,
                 dataType: 'json',
+                //randomize return 
                 success: (json) => this.toggleImage(json.results[Math.floor(Math.random() * 10)]['urls']['regular'])
             });
         }
@@ -196,15 +199,15 @@
         addEventListeners () {
             $('#link',parent.document).on('click', () => {
                 this.source = 'link';
-                $('#popup-input',parent.document).val('').attr('placeholder','Paste Link/Enter or Submit');
-                $('#popup-panel',parent.document).css('display','inherit');
-                setTimeout( ()=> $('#popup-input',parent.document).focus(), 0);
+                $('#shared-input',parent.document).val('').attr('placeholder','Paste HTML Link');
+                $('#shared-panel',parent.document).css('display','inherit');
+                setTimeout( ()=> $('#shared-input',parent.document).focus(), 0);
             });
             $('#search',parent.document).on('click', () => {
                 this.source = 'search';
-                $('#popup-input',parent.document).val('').attr('placeholder','Type Search/Enter or Submit');
-                $('#popup-panel',parent.document).css('display','inherit');
-                setTimeout( ()=> $('#popup-input',parent.document).focus(), 0);
+                $('#shared-input',parent.document).val('').attr('placeholder','Search Images');
+                $('#shared-panel',parent.document).css('display','inherit');
+                setTimeout( ()=> $('#shared-input',parent.document).focus(), 0);
             });
             $('#render',parent.document).on('click', (event) => {
                 image.renderAppstraction();
@@ -223,13 +226,13 @@
                 this.disableButtons(500);
             }); 
             $('#back',parent.document).on('click', () => {
-                $('#popup-panel',parent.document).css('display','none');
+                $('#shared-panel',parent.document).css('display','none');
             });
             $('#submit-search',parent.document).on('click', () => {
                 //same pop up used for both link and search; different outcome depending on which button is clicked
                 this.source === 'search' ? this.apiQuery() : 
-                    $('#popup-input',parent.document).val().length > 0 ? this.toggleImage($('#popup-input',parent.document).val()) : null;
-                $('#popup-panel',parent.document).css('display','none');
+                    $('#shared-input',parent.document).val().length > 0 ? this.toggleImage($('#shared-input',parent.document).val()) : null;
+                $('#shared-panel',parent.document).css('display','none');
                 return false;
             });   
         }

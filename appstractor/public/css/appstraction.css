@@ -1,3 +1,4 @@
+/* this file stylizes appstraction script (blank.ejs) */
 html, body, .top-canvas, .bottom-canvas, .background-canvas {
     width: 3600px;
     height: 2400px; 
