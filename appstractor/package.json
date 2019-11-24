@@ -1,7 +1,10 @@
 {
   "name": "appstractor",
   "version": "1.0.0",
-  "description": "",
+  "engines": {
+    "node": "10.16.3"
+  },
+  "description": "Live Link:",
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -17,5 +20,6 @@
     "fs": "0.0.1-security",
     "method-override": "^3.0.0",
     "mongoose": "^5.7.11"
-  }
+  },
+  "devDependencies": {}
 }
