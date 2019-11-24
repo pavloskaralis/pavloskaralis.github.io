@@ -9,12 +9,13 @@ Purpose: Appstractor serves to provide users with a means of creating abstract a
 
 Technologies: 
 Node.js
-Capture-Chrome 
-EJS
-jQuery
-Iframe
 Express
 Mongoose
+EJS
+Capture-Chrome 
+jQuery
+Iframe
+Unsplash API via AJAX
 
 Technologies Overview:
 This app relies on Node.js for its back-end functionality. More specifically, the installed npm dependencies include: express, mongoose, ejs, and capture-chrome. The server relies on an express object for its routing, and mongoose to connect it with mongoDB for data storage. Given the complexities of the rendering script, EJS was opted over React/JSX due to greater familiarity with its dom manipulation techniques. Finally, the app's ability to download the browser window as a png file stems from the capture-chrome npm, which serves as an intermediary shortcut to puppeteer's screen capturing capabilities. 
