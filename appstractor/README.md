@@ -52,4 +52,5 @@ Techniques:
 3. invisible input text tags which also accomplished the above
 4. accessing an iframe's parent nodes via parent.document in order to allow real time rendering
 5. status 204 + resourcing iframes to keep a streamlined user experience by avoiding page refreshes 
+6. layering iframes to prevent load in flash 
 
