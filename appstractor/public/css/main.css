@@ -24,6 +24,7 @@ body {
     background-image: url('/../images/bg.jpg');
     background-position: top;
     background-size: cover; 
+    filter: saturate(135%);
     opacity: .2;
 }
 
