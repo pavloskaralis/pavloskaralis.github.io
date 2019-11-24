@@ -24,11 +24,11 @@ body {
     background-image: url('/../images/bg.jpg');
     background-position: top;
     background-size: cover; 
-    opacity: .25;
+    opacity: .225;
 }
 
 .overlay-color {
-    background-color: rgb(20,25,30); 
+    background-color: rgb(25,30,35); 
     position: fixed;
     top: 0;
     left: 0;
