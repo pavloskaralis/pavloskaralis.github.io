@@ -556,7 +556,7 @@ $( () => {
                 this.currentCard = this.players['1'].hand.find(handCardInstance => handCardInstance.nodeID === cardInstance.fetchNode().attr('id'));
                 this.checkTurnCompletion();
             });
-        } ƒ
+        } 
     /*//////////////////////*/
     /*///////END GAME///////*/
     /*//////////////////////*/ 
