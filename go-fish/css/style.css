@@ -61,7 +61,7 @@ body {
 }
 
     .deck-card {
-        opacity: .5;
+        opacity: 0;
         max-height:100px; 
         max-width: 67px; 
         width: 5vw;
@@ -78,9 +78,10 @@ body {
         }
 
         @keyframes float {
-            0%{margin-left: -10%} 
-            50%{margin-left: 50%} 
-            100%{margin-left: 110%}
+            0%{margin-left: -10%; opacity: 0;}
+            1%{opacity: .5;}
+            50%{margin-left: 50%; opacity: .5;} 
+            100%{margin-left: 110%; opacity: .5;}
         } 
 
     
