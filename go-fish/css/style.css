@@ -130,6 +130,8 @@ body {
 
             .hand-card{
                 max-height:100px; 
+                height: 7.5vw; 
+                min-height: 58px;
                 max-width: 67px; 
                 transform: rotate(180deg); 
                 width: 5vw;
