@@ -19,9 +19,7 @@
     "redux-logger": "^3.0.6",
     "redux-thunk": "^2.3.0",
     "serve": "^11.3.0",
-    "styled-components": "^5.0.1",
-    "predeploy": "npm run build",
-    "deploy": "gh-pages -d build"
+    "styled-components": "^5.0.1"
   },
   "scripts": {
     "dev": "react-scripts start",
@@ -29,7 +27,9 @@
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
-    "heroku-postbuild": "npm run build"
+    "heroku-postbuild": "npm run build",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
   },
   "eslintConfig": {
     "extends": "react-app"
